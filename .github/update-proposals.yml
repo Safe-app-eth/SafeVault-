@@ -1,28 +1,20 @@
-name: ⏱ Auto Update Proposals
+# 1. Create a new branch
+git checkout -b feat/dashboard-github-pages
 
-on:
-  schedule:
-    - cron: "*/15 * * * *"
-  workflow_dispatch:
+# 2. Add your changes
+git add docs index.html docs/proposals.json docs/.nojekyll .github/workflows/update-proposals.yml README.md
 
-permissions:
-  contents: write
+# 3. Commit
+git commit -m "chore: add GitHub Pages dashboard + auto-sync Action"
 
-jobs:
-  sync-proposals:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-        with:
-          persist-credentials: false
+# 4. Push branch
+git push --set-upstream origin feat/dashboard-github-pages
 
-      - name: Download proposals.json
-        run: >
-          curl -fsSL https://your-api.com/proposals.json -o docs/proposals.json
-
-      - name: Commit & push if changed
-        uses: stefanzweifel/git-auto-commit-action@v6
-        with:
-          commit_message: "🔄 Update proposals.json (auto sync)"
-          file_pattern: docs/proposals.json
+# 5. Open PR via GitHub CLI
+gh pr create \
+  --title "✨ Add SafeVault GitHub Pages Dashboard + Proposals Sync" \
+  --body "This PR adds a static dashboard under docs/ and an automated GH Action to sync proposals.json every 15 minutes. It enables instant dashboard hosting and auto updating." \
+  --base main \
+  --head feat/dashboard-github-pages \
+  --label chore \
+  --reviewer @your-reviewer
