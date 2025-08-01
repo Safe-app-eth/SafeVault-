@@ -1,0 +1,64 @@
+# .github/workflows/update-proposals.yml
+
+name: 🔄 Sync SafeVault Proposals to Dashboard
+
+on:
+  schedule:
+    - cron: "*/15 * * * *" # every 15 minutes
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  update-and-pr:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - name: Download proposals from Reown
+        run: |
+          curl -fsSL https://reown.app/api/proposals.json -o docs/proposals.json
+
+      - name: Commit and push if changed
+        run: |
+          git config user.name "SafeVault Bot"
+          git config user.email "bot@safevault.com"
+          git add docs/proposals.json
+          git diff --cached --quiet && echo "No changes" && exit 0
+          git commit -m "🔄 Update proposals.json"
+          git push origin HEAD:feat/dashboard-update
+
+      - name: Create or update pull request
+        uses: gr2m/create-or-update-pull-request@v3
+        with:
+          title: "🔄 Update SafeVault Dashboard proposals"
+          body: |
+            This automated PR updates the `proposals.json` file used in the SafeVault GitHub Pages dashboard.
+            
+            - Pulls data from Reown API
+            - Commits only if changes are detected
+            - Keeps the dashboard always current
+            
+            > Can be auto-merged if no review is required.
+          head: feat/dashboard-update
+          base: main
+          labels: automation, dashboard
+
+      # Optional: trigger Vercel rebuild
+      - name: 🔁 Trigger Vercel Rebuild (Optional)
+        if: ${{ env.https://api.vercel.com/v1/integrations/deploy/prj_LLmmGDmHl7VHimCMyhRDyTPZfgxc/GjkfM9NzLs}}
+        run: |
+          curl -X POST "$VERCEL_DEPLOY_HOOK"
+
+      # Optional: send Telegram alert
+      - name: 📣 Send Telegram Alert (Optional)
+        if: ${{ env.7841605450:AAHev-ZXjdtJg2mp5t6uGFqkvTShSW6PAeY&& env.1097330947}}
+        run: |
+          curl -s -X POST https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendMessage \
+            -d chat_id=${{ secrets.TELEGRAM_CHAT_ID }} \
+            -d text="✅ SafeVault Dashboard proposals updated: PR created or synced."
