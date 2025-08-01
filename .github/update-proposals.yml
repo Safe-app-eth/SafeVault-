@@ -1,26 +1,28 @@
-name: ⏱ Update Safe Proposals
+name: ⏱ Auto Update Proposals
 
 on:
   schedule:
-    - cron: "*/15 * * * *" # every 15 minutes
+    - cron: "*/15 * * * *"
   workflow_dispatch:
 
+permissions:
+  contents: write
+
 jobs:
-  update-proposals:
+  sync-proposals:
     runs-on: ubuntu-latest
     steps:
-      - name: 📥 Checkout Repository
+      - name: Checkout repository
         uses: actions/checkout@v4
         with:
           persist-credentials: false
 
-      - name: 🔄 Update proposals.json
-        run: |
-          mkdir -p SAFE-Dashboard
-          curl -s https://api.reown.com/proposals > SAFE-Dashboard/proposals.json
+      - name: Download proposals.json
+        run: >
+          curl -fsSL https://your-api.com/proposals.json -o docs/proposals.json
 
-      - name: 📤 Commit & Push if Changed
-        uses: stefanzweifel/git-auto-commit-action@v5
+      - name: Commit & push if changed
+        uses: stefanzweifel/git-auto-commit-action@v6
         with:
-          commit_message: "🔄 Update proposals.json (auto-sync)"
-          file_pattern: SAFE-Dashboard/proposals.json
+          commit_message: "🔄 Update proposals.json (auto sync)"
+          file_pattern: docs/proposals.json
