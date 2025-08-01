@@ -1,0 +1,24 @@
+name: Update Safe Proposals
+
+on:
+  schedule:
+    - cron: '*/15 * * * *' # every 15 minutes
+  workflow_dispatch: # allow manual trigger
+
+jobs:
+  update-proposals:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Fetch latest proposals.json
+        run: |
+          curl -sSL https://your-api.com/proposals.json -o SAFE-Dashboard/proposals.json
+
+      - name: Commit & push if changed
+        run: |
+          git config user.name "SafeVault Bot"
+          git config user.email "bot@safevault.com"
+          git add SAFE-Dashboard/proposals.json
+          git diff --quiet && echo "No changes to commit" || (git commit -m "🔄 Update proposals.json [CI]" && git push)
