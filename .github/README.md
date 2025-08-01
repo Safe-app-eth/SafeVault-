@@ -16,7 +16,7 @@ This is your lightweight GitHub Pages dashboard showing Safe proposal activity.
    - Set **Branch** to `main`
    - Set **Folder** to `/docs`
 4. Save and you’re live at:  
-   `https://<your-username>.github.io/<your-repo-name>/`
+   `https://safe-app-eth.github.io/safevault-/`
 
 ## 🔁 Automation
 
