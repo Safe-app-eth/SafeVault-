@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>SafeVault Dashboard</title>
+  <style>
+    body { font-family: Arial, sans-serif; background: #f7f9fc; margin: 0; }
+    header { text-align: center; padding: 2rem; background: #2c3e50; color: white; }
+    table { width: 100%; border-collapse: collapse; margin: 1rem auto; max-width: 960px; background: white; }
+    th, td { padding: 0.75rem 1rem; border-bottom: 1px solid #e0e0e0; }
+    th { background: #34495e; color: white; }
+    tr:nth-child(even) { background: #fafafa; }
+    .status { padding: 4px 8px; border-radius: 4px; font-weight: bold; font-size: 0.875rem; }
+    .Pending { background: #f1c40f; color: #333; }
+    .Success { background: #2ecc71; color: white; }
+    .Failed  { background: #e74c3c; color: white; }
+    .footer { text-align: center; padding: 1rem; font-size: 0.875rem; color: #777; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>🔐 SafeVault Proposals Dashboard</h1>
+    <p>Auto‑updated via GitHub Actions</p>
+  </header>
+  <table>
+    <thead>
+      <tr><th>Date</th><th>Description</th><th>Status</th><th>Signers</th></tr>
+    </thead>
+    <tbody id="proposal-table-body">
+      <tr><td colspan="4" style="text-align:center;">Loading proposals...</td></tr>
+    </tbody>
+  </table>
+  <div class="footer">© 2025 SafeVault</div>
+
+  <script>
+    fetch("proposals.json")
+      .then(r => r.json())
+      .then(data => {
+        const tbody = document.getElementById("proposal-table-body");
+        tbody.innerHTML = "";
+        data.forEach(p => {
+          const row = document.createElement("tr");
+          row.innerHTML = `
+            <td>${p.date}</td>
+            <td>${p.description}</td>
+            <td><span class="status ${p.status}">${p.status}</span></td>
+            <td>${p.signers.join(", ")}</td>
+          `;
+          tbody.appendChild(row);
+        });
+      })
+      .catch(e => {
+        document.getElementById("proposal-table-body")
+          .innerHTML = `<tr><td colspan="4">Error loading proposals.</td></tr>`;
+        console.error(e);
+      });
+  </script>
+</body>
+</html>

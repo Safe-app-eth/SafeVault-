@@ -1,0 +1,27 @@
+
+            - name: stackql-deploy
+  # You may pin to the exact commit or the version.
+  # uses: stackql/stackql-deploy-action@d901f6ccfa4b21de69d35f42032287d26ace01d5
+  uses: stackql/stackql-deploy-action@v1.0.2
+  with:
+    # stackql-deploy command to run (`build` or `test`)
+    command: 
+    # repo directory containing `stackql_manifest.yml` and `resources` dir
+    stack_dir: 
+    # environment to deploy or test (e.g., `dev`, `prod`)
+    stack_env: 
+    # environment variables or secrets imported into a stack (format: `KEY=value,KEY2=value2`)
+    env_vars: # optional
+    # environment variables sourced from a file
+    env_file: # optional
+    # show queries run in the output logs
+    show_queries: # optional
+    # set the logging level (`INFO` or `DEBUG`, defaults to `INFO`)
+    log_level: # optional
+    # perform a dry run of the operation
+    dry_run: # optional
+    # custom registry URL to be used for stackql
+    custom_registry: # optional
+    # action on failure
+    on_failure: # optional
+          

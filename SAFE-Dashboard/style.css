@@ -1,0 +1,30 @@
+body {
+  font-family: sans-serif;
+  margin: 40px;
+  background: #f9f9f9;
+  color: #333;
+}
+header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+  box-shadow: 0 0 8px rgba(0,0,0,0.1);
+}
+th, td {
+  padding: 12px 16px;
+  border-bottom: 1px solid #eee;
+  text-align: left;
+}
+th {
+  background-color: #fafafa;
+}
+footer {
+  text-align: center;
+  margin-top: 40px;
+  font-size: 0.85em;
+  color: #777;
+}

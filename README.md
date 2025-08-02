@@ -7,7 +7,7 @@ This project is licensed under the MIT License — see the [LICENSE](./LICENSE) 
 
 # 🔐 SafeVault — Secure Dashboard for Safe{Wallet}
 
-**Live App:** [safe-vault-f44t.vercel.app](https://safe-vault-f44t.vercel.app)  
+**Live App:** [http://reown-appkit-delta.vercel.app]  
 ✅ Safe App Ready · 🟢 GitHub Actions Enabled · ⚡️ Vercel Deployed
 
 ---

@@ -1,0 +1,8 @@
+curl -X POST http://localhost:3000/api/verifySafeMessage \
+  -H "Content-Type: application/json" \
+  -d '{
+    "message": "0xe5582702adc2ce1c27e40823b76eafee815535960a22ceec572044502f1bc23d",
+    "signature": "0x...",
+    "chainId": 42161,
+    "safeAddress": "0x821f2b40d965b81202b181aba1c7a380c49ed675"
+}'

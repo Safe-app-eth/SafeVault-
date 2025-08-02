@@ -1,0 +1,38 @@
+name: Update proposals and PR
+
+on:
+  schedule:
+    - cron: "*/15 * * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  update-and-pr:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - name: Download proposals.json
+        run: |
+          curl -fsSL https://your-api.com/proposals.json -o docs/proposals.json
+
+      - name: Commit & push if changed
+        run: |
+          git config user.name "SafeVault Bot"
+          git config user.email "bot@safevault.com"
+          git add docs/proposals.json
+          git commit -m "🔄 Update proposals.json" || exit 0
+          git push origin HEAD:feat/dashboard-update
+
+      - name: Create or update PR
+        uses: gr2m/create-or-update-pull-request@v3
+        with:
+          title: "🔄 Update SafeVault Dashboard proposals"
+          body: "Auto‑sync updated proposals.json from backend API."
+          head: feat/dashboard-update
+          base: main
+          labels: automation
