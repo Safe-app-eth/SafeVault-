@@ -1,0 +1,68 @@
+name: 🔁 Autofill PR Template
+
+on:
+  pull_request:
+    types: [opened, edited, synchronize]
+
+jobs:
+  autofill:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: ⬇️ Checkout
+        uses: actions/checkout@v4
+
+      - name: 🧾 Get short commit hash
+        id: commit
+        run: echo "hash=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
+
+      - name: 🧠 Determine PR type from branch name
+        id: prtype
+        run: |
+          branch="${{ github.head_ref }}"
+          type="📦 Unknown"
+
+          if [[ "$branch" == feature/* ]]; then type="✨ Feature"
+          elif [[ "$branch" == bugfix/* || "$branch" == fix/* ]]; then type="🐛 Bug Fix"
+          elif [[ "$branch" == refactor/* ]]; then type="🛠 Refactor"
+          elif [[ "$branch" == docs/* ]]; then type="📄 Documentation"
+          elif [[ "$branch" == ci/* ]]; then type="⚙️ CI/CD"
+          fi
+
+          echo "type=$type" >> $GITHUB_OUTPUT
+
+      - name: 🖊 Autofill PR body
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const prNumber = context.payload.pull_request.number;
+            const commitHash = '${{ steps.commit.outputs.hash }}';
+            const prType = '${{ steps.prtype.outputs.type }}';
+            const vercelLink = "https://safe-vault-f44t.vercel.app";
+
+            const { data: pr } = await github.rest.pulls.get({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: prNumber
+            });
+
+            let body = pr.body || "";
+
+            body = body
+              .replace("<!-- AUTOFILL:commit_hash -->", commitHash)
+              .replace("<!-- AUTOFILL:vercel_preview_url -->", vercelLink)
+              .replace("<!-- AUTOFILL:pr_type -->", prType);
+
+            await github.rest.pulls.update({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: prNumber,
+              body
+            });
+
+      - name: 🏷 Add PR label
+        uses: actions-ecosystem/action-add-labels@v1
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          labels: |
+            ${{ steps.prtype.outputs.type }}
