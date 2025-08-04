@@ -1,73 +1,126 @@
-# Safe Apps Provider
+# Safe CLI
 
-[![npm](https://img.shields.io/npm/v/@safe-global/safe-apps-provider)](https://www.npmjs.com/package/@safe-global/safe-apps-provider)
+[![PyPI version](https://badge.fury.io/py/safe-cli-eth.svg)](https://badge.fury.io/py/safe-cli-eth)
+[![Build Status](https://github.com/Safe-app-eth/cli/actions/workflows/ci.yml/badge.svg)](https://github.com/Safe-app-eth/cli/actions/workflows/ci.yml)
+[![Coverage Status](https://coveralls.io/repos/github/Safe-app-eth/cli/badge.svg?branch=main)](https://coveralls.io/github/Safe-app-eth/cli?branch=main)
+![Python 3.10](https://img.shields.io/badge/Python-3.10-blue.svg)
+![Python 3.11](https://img.shields.io/badge/Python-3.11-blue.svg)
+![Python 3.12](https://img.shields.io/badge/Python-3.12-blue.svg)
+[![Docker Image](https://img.shields.io/docker/v/safeappeth/cli?label=Docker&sort=semver)](https://hub.docker.com/r/safeappeth/cli)
 
-This is a provider that follows common standards (e.g. [EIP-1193](https://eips.ethereum.org/EIPS/eip-1193)) and can be used with various Web3 libraries (e.g. web3.js or Ethers)
+## 🔐 Safe CLI — Secure Multisig From the Command Line
 
-### How to use
+Safe CLI is a command-line utility for interacting with Safe{Wallet} multisigs. It allows you to:
 
-- Add npm package
+- Manage Safe accounts via CLI
+- Broadcast transactions securely
+- Integrate with Docker and GitHub Actions
+- Work offline — no reliance on Safe APIs
+
+> Fully open-source. Supports Ethereum mainnet and testnets. 
+
+---
+
+## 🚀 Installation
+
+### Using Docker
 
 ```bash
-yarn add @safe-global/safe-apps-provider
-
-npm i @safe-global/safe-apps-provider
+docker run -it safeappeth/cli safe-creator
 ```
 
-### SafeAppProvider
+For working with an existing Safe:
 
-The provider can be used with the [safe-apps-react-sdk](https://github.com/safe-global/safe-apps-sdk/tree/main/packages/safe-apps-react-sdk) and common web3 libraries.
-
-#### With Ethers.js
-
-- [Ethers.js](https://docs.ethers.io/v5/api/providers/other/#Web3Provider)
-
-```js
-import React, { useMemo } from 'react';
-import { ethers } from 'ethers';
-import { useSafeAppsSDK } from '@safe-global/safe-apps-react-sdk';
-import { SafeAppProvider } from '@safe-global/safe-apps-provider';
-
-const App = () => {
-  const { sdk, safe } = useSafeAppsSDK();
-  const web3Provider = useMemo(() => new ethers.providers.Web3Provider(new SafeAppProvider(safe, sdk)), [sdk, safe]);
-
-  // use provider with contracts
-
-  return;
-};
-
-export default App;
+```bash
+docker run -it safeappeth/cli safe-cli <safe_address> <ethereum_node_url>
 ```
 
-#### With web3.js
+### Using Python (PIP)
 
-- [web3.js](https://web3js.readthedocs.io/en/v1.5.2/web3.html)
+> Requires Python >= 3.10
 
-```js
-import React, { useMemo } from 'react';
-import Web3 from 'web3';
-import { useSafeAppsSDK } from '@safe-global/safe-apps-react-sdk';
-import { SafeAppProvider } from '@safe-global/safe-apps-provider';
-
-const App = () => {
-  const { sdk, safe } = useSafeAppsSDK();
-  const web3Provider = useMemo(() => new Web3(new SafeAppProvider(safe, sdk)), [sdk, safe]);
-
-  // use provider with contracts
-
-  return;
-};
-
-export default App;
+```bash
+pip install -U safe-cli-eth
 ```
 
-### A note on gas limit
-The ethereum transaction gas limit passed to the safe-apps-provider will be treated as safeTxGas, which is an equivalent of the ethereum transaction gas limit in the Safe context. To learn more about the safe transaction gas, read here:  
-https://github.com/safe-global/safe-contracts/blob/c36bcab46578a442862d043e12a83fec41143dec/docs/safe_tx_gas.md  
+---
 
-If you don't want to pass a calculation and leave it to the Safe, pass 0 as the gas limit.
+## 🧰 Usage
 
-### More scenarios
+```bash
+safe-cli --history --get-safes-from-owner 0xYourSafeAddress https://rpc-endpoint
+```
 
-For the SDK overview documentation, please refer to the [safe-apps-sdk](https://github.com/safe-global/safe-apps-sdk/) documentation
+### Supported Commands
+
+- `send-ether`
+- `send-erc20`
+- `send-erc721`
+- `send-custom`
+- `tx-builder`
+
+Example:
+
+```bash
+safe-cli send-ether 0xSafeAddress https://sepolia.drpc.org 0xToAddress 1000000000000000000 \
+  --private-key key1 --private-key key2 --non-interactive
+```
+
+To run unattended:
+
+```bash
+export SAFE_CLI_INTERACTIVE=0
+```
+
+---
+
+## 🛠 Safe Creator
+
+Deploy a new Safe directly:
+
+```bash
+safe-creator https://rpc-url your_private_key
+```
+
+Add custom parameters like threshold, owners, or custom master copies as needed.
+
+---
+
+## 🔧 Dev Setup
+
+```bash
+git clone https://github.com/Safe-app-eth/cli.git
+cd cli
+python3 -m venv venv
+source venv/bin/activate
+pip install -r requirements-dev.txt
+pre-commit install
+```
+
+To install locally:
+
+```bash
+pip install .
+```
+
+---
+
+## 🌐 Related Projects
+
+- [Safe Infrastructure](https://github.com/safe-global/safe-infrastructure)
+- [Safe Transaction Service](https://github.com/safe-global/safe-transaction-service)
+- [Safe Smart Account](https://github.com/safe-global/safe-smart-account)
+
+---
+
+## 👥 Contributors
+
+- [@thegoodeth](https://github.com/thegoodeth)
+- Add more contributors here...
+
+---
+
+## 📄 License
+
+[MIT](./LICENSE)
+"""

@@ -1,21 +1,9 @@
 {
-  "name": "Gnosis SafeVault",
-  "short_name": "SafeVault",
-  "start_url": "/",
-  "display": "standalone",
-  "background_color": "#ffffff",
-  "theme_color": "#000000",
-  "description": "Custom Safe{Wallet} Dashboard for secure multisig ops",
-  "icons": [
-    {
-      "src": "/icons/icon-192x192.png",
-      "sizes": "192x192",
-      "type": "image/png"
-    },
-    {
-      "src": "/icons/icon-512x512.png",
-      "sizes": "512x512",
-      "type": "image/png"
-    }
-  ]
+  "name": "SafeVault",
+  "description": "Governance, automation, and Safe{Wallet} tooling for multisig power users.",
+  "icons": ["https://thegoodeth.github.io/safevault/icon.png"],
+  "safeAppsSDKVersion": "1.4.1",
+  "provider": {
+    "url": "https://thegoodeth.github.io/safevault"
+  }
 }

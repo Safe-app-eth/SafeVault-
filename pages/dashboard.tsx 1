@@ -1,19 +1,17 @@
-import ProposeTx from "@/components/ProposeTx";
+// pages/dashboard.tsx
+import React from "react";
+import SafeTable from "@/components/SafeTable";
+import { loadSafeConfigs } from "@/utils/loadSafes";
 
-<ProposeTx />
-import DashboardLayout from '@/components/layout/DashboardLayout'
-import WalletStatus from '@/components/WalletStatus'
+const DashboardPage = () => {
+  const safesByChain = loadSafeConfigs();
 
-export default function DashboardPage() {
   return (
-    <DashboardLayout>
-      <div className="mb-8">
-        <WalletStatus />
-      </div>
+    <div>
+      <h1>Safe Dashboard</h1>
+      <SafeTable safesByChain={safesByChain} />
+    </div>
+  );
+};
 
-      <section>
-        <p className="text-gray-600">Welcome to your SafeVault 🔐 dashboard.</p>
-      </section>
-    </DashboardLayout>
-  )
-}
+export default DashboardPage;

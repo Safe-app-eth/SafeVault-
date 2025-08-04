@@ -1,62 +1,112 @@
-# 🔐 Gnosis-vault
+# 🛡️ SafeVault
 
-Welcome to your custom Safe{Wallet} Dashboard, designed
+Secure multisig governance & automation with Safe App integrations
 
-Perfect — since you're on an **iPhone**, let me tailor everything for **mobile-first setup and deployment**, with minimal terminal or desktop dependency.
+Built on Safe{Wallet}, powered by Reown, and designed for Web3 teams and DAOs.
 
-We’ll make this **touch-friendly**, and you can either:
-- Use **GitHub (web)** to create files + push changes,
-- Or use **apps like [Working Copy](https://apps.apple.com/app/working-copy-git-client/id896694807)** or **Play.js**, which let you run GitHub + code from iOS.
+⸻
 
----
+🔗 Live Safe App (Hosted via GitHub Pages or Vercel)
 
-## 📱 Mobile-Friendly Plan for Setting Up `Gnosis-vault🔐`
+https://thegoodeth.github.io/safevault
 
-You don’t need to run CLI commands. Just follow these steps using Safari/Chrome or GitHub mobile app.
 
----
+🚀 Features
+	•	🔐 Governance automation with Safe multisigs
+	•	🧩 Safe App integration using @safe-global/safe-apps-react-sdk
+	•	⚙️ Proposal execution engine with Reown + GitHub automation
+	•	📦 One-click deployment via Vercel or next export
+	•	💬 Telegram proposal previews
+	•	🧠 On-chain signer intelligence
 
-### ✅ Step 1: Create a GitHub Repository
+⸻
 
-Go to [github.com](https://github.com) and:
+🧰 Tech Stack
+	•	React + Next.js 13
+	•	Safe SDKs (Safe Core, Protocol Kit)
+	•	Tailwind CSS
+	•	TypeScript
+	•	Ethers v6
+	•	Reown AppKit
+	•	GitHub Actions + Vercel
 
-- Create a new repo (e.g. `gnosis-vault`)
-- Make it **private** or **public**, your choice
-- No need to initialize with README (we’ll add that manually)
+🧑‍💻 Getting Started
+git clone https://github.com/thegoodeth/safevault
+cd safevault
+npm install
+npm run dev
 
----
 
-### 📁 Step 2: Manually Add These Folders & Files via GitHub Web
+📁 Folder Structure
 
-#### Required folders:.github/workflows/
-src/pages/
-src/utils/
-scripts/
-public/icons
----
+.
+├── components/            # Reusable UI components
+├── pages/                 # Next.js page routes
+├── public/                # Static assets (icon, manifest, etc.)
+├── styles/                # Tailwind CSS
+├── utils/                 # SDK integrations
+├── .github/               # Actions & workflows
+├── package.json
+└── README.md
 
-### ✅ Now Create the Files One by One (Copy-Paste from Here):
+⚙️ Environment Setup
 
-#### 🔹 `README.md`
+Create a .env.local file for local testing:
+NEXT_PUBLIC_SAFE_APP_NAME=SafeVault
+NEXT_PUBLIC_SAFE_APP_URL=https://thegoodeth.github.io/safevault
+NEXT_PUBLIC_CHAIN_ID=1
 
-Go to your GitHub repo → `Add file` → `Create new file` → name it `README.md`
+🔐 Safe App Configuration
 
-Paste this:
+Add this to your /public/manifest.json
 
-```md
-# 🔐 Gnosis-vault
+{
+  "name": "SafeVault",
+  "description": "Governance, automation, and Safe{Wallet} tooling for multisig power users.",
+  "icons": ["https://thegoodeth.github.io/safevault/icon.png"],
+  "safeAppsSDKVersion": "1.4.1",
+  "provider": {
+    "url": "https://thegoodeth.github.io/safevault"
+  }
+}
 
-Welcome to your custom Safe{Wallet} Dashboard, designed for secure multi-sig management with real-time GitHub + Safe integrations.
+🔧 Build & Export (for GitHub Pages)
+npm run build
+npm run export
+Make sure your next.config.js has this if you’re using next export:
 
-## ⚡ Live App
-[Vercel App Live Link](https://your-vercel-app.vercel.app)
+const isProd = process.env.NODE_ENV === 'production';
 
-## 🧠 Features
-- Multisig-safe dashboard
-- Proposal view + README updater
-- GitHub Actions + webhook support
-- Mobile-friendly PWA setup
+module.exports = {
+  output: 'export',
+  images: {
+    unoptimized: true,
+  },
+  assetPrefix: isProd ? '/safevault/' : '',
+  basePath: isProd ? '/safevault' : '',
+};
 
-## 🔧 Safe Info
-- Address: `0xAfD5f60aA8eb4F488eAA0eF98c1C5B0645D9A0A0`
-- Chain: Arbitrum
+📦 Deployment (Vercel)
+	•	Use Vercel for 1-click deployment
+	•	Make sure the repo is public or you’re on a Pro plan to deploy private org projects
+	•	Configure your GitHub workflow (.github/workflows/deploy.yml) for CI/CD
+
+🔄 Reown Integration
+
+import { appKit } from 'reown';
+
+const user = appKit.getUser();
+console.log("Reown User Address:", user?.address);
+
+<button onClick={() => appKit.login()}>Login</button>
+<button onClick={() => appKit.logout()}>Logout</button>
+
+🧪 Test with Safe{Wallet}
+	1.	Open: https://app.safe.global
+	2.	Click: Apps > Load Custom App
+	3.	Paste your hosted SafeVault URL
+	4.	Approve permissions and test proposals
+
+ 📘 License
+
+MIT © thegoodeth

@@ -1,7 +1,0 @@
-SafeVault/
-├── .github/
-│   └── workflows/
-│       └── threshold-check.yml
-├── scripts/
-│   └── checkThreshold.js
-└── README.md

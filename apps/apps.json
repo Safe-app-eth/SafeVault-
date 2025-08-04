@@ -1,0 +1,13 @@
+{
+  "id": "safevault",
+  "name": "SafeVault",
+  "url": "https://safe-app-eth.github.io/SafeVault-Frontend",
+  "iconUrl": "https://safe-app-eth.github.io/SafeVault-Frontend/icon.svg",
+  "description": "Whitelisted, time-locked vaults with GitHub and Telegram-based proposal automation. Includes Reown wallet onboarding.",
+  "chainIds": [1, 137, 42161],
+  "categories": ["DeFi", "Governance"],
+  "developer": {
+    "name": "Safe-app-eth",
+    "url": "https://github.com/Safe-app-eth/SafeVault-"
+  }
+}

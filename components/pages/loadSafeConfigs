@@ -1,0 +1,10 @@
+import { loadSafeConfigs } from "@/utils/loadSafes";
+
+const safeData = loadSafeConfigs();
+
+safeData.forEach(({ chainId, safes }) => {
+  console.log(`Chain: ${chainId}`);
+  safes.forEach(({ address, threshold, owners }) => {
+    console.log(`- Safe: ${address} | Threshold: ${threshold}`);
+  });
+});

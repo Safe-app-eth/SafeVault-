@@ -1,43 +1,58 @@
 {
-  "name": "safevault-automation",
+  "name": "safevault",
   "version": "1.0.0",
-  "type": "module",
-  "description": "Automation tooling for SafeVault – a secure and customizable Safe{Wallet} dashboard integration with GitHub, Discord, and Reown.",
-  "author": "thegoodeth <rchigozle60@gmail.com>",
+  "description": "SafeVault – Secure multisig governance, automation, and Safe Apps integration.",
+  "author": "thegoodeth",
   "license": "MIT",
+  "homepage": "https://thegoodeth.github.io/safevault",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/thegoodeth/safevault"
+  },
   "keywords": [
-    "safe",
+    "safe-app",
     "gnosis-safe",
-    "safe-wallet",
-    "safevault",
+    "multisig",
+    "governance",
     "automation",
-    "web3",
-    "ethereum",
-    "arbitrum",
     "reown",
-    "gnosis",
-    "typescript",
-    "github-actions"
+    "dao",
+    "ethers",
+    "appkit"
   ],
   "scripts": {
-    "start": "ts-node scripts/safevault-manage.ts",
-    "dev": "nodemon scripts/safevault-manage.ts"
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "export": "next export",
+    "analyze": "ANALYZE=true next build",
+    "format": "prettier --write .",
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@safe-global/protocol-kit": "^1.5.0",
-    "@safe-global/safe-core-sdk": "^6.0.0",
-    "@safe-global/safe-ethers-lib": "^6.0.0",
-    "@safe-global/api-kit": "^4.0.0",
-    "@safe-global/safe-core-sdk-types": "^5.0.0",
-    "ethers": "^6.6.0",
-    "dotenv": "^17.0.0"
+    "@safe-global/safe-apps-react-sdk": "^0.10.5",
+    "@safe-global/protocol-kit": "^1.6.2",
+    "@safe-global/safe-core-sdk": "^7.2.0",
+    "@safe-global/safe-ethers-adapters": "^7.2.0",
+    "appkit": "latest",
+    "ethers": "^6.8.1",
+    "reown": "latest",
+    "next": "^15.0.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
   },
   "devDependencies": {
-    "ts-node": "^10.9.1",
+    "eslint": "^9.0.0",
+    "eslint-config-next": "^15.0.0",
     "typescript": "^5.4.2",
-    "nodemon": "^3.0.2"
+    "tailwindcss": "^4.0.0",
+    "postcss": "^8.4.35",
+    "autoprefixer": "^10.4.19",
+    "prettier": "^3.2.5"
   },
   "engines": {
-    "node": ">=18.0.0"
+    "node": ">=18.0.0",
+    "npm": ">=9.0.0"
   }
 }

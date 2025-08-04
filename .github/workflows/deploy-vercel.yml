@@ -1,0 +1,48 @@
+name: Deploy SafeVault to Vercel
+permissions:
+  contents: read
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v4
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 8
+
+      - name: Install Dependencies
+        run: pnpm install
+        working-directory: "."
+
+      - name: Inject Environment Variables
+        run: |
+          echo "NEXT_PUBLIC_SAFE_ADDRESS=${{ secrets.0xAfD5f60aA8eb4F488eAA0eF98c1C5B0645D9A0A0 }}" >> .env
+          echo "NEXT_PUBLIC_CHAIN_ID=${{ secrets.MAINNET }}" >> .env
+          echo "NEXT_PUBLIC_RPC_URL=${{ secrets.https://eth-mainnet.g.alchemy.com/v2/Y9Y7RS6TB2X3A8UDZ4Q6YK39UDK1IDQKUT}}" >> .env
+        working-directory: "."
+
+      - name: Build Project
+        run: pnpm build
+        working-directory: "."
+
+      - name: Deploy to Vercel
+        uses: amondnet/vercel-action@v25
+        with:
+          vercel-token: ${{ secrets.gu75OOG48wyS7Evlrw37lyXD }}
+          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
+          vercel-project-id: ${{ secrets.prj_LLmmGDmHl7VHimCMyhRDyTPZfgxc}}
+          working-directory: "."
+          prod: ${{ github.ref == 'refs/heads/main' }}

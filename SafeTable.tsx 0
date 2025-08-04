@@ -1,0 +1,111 @@
+
+import React, { useState } from "react";
+
+type Safe = {
+  address: string;
+  threshold: number;
+  owners: string[];
+};
+
+type Props = {
+  safesByChain: {
+    chainId: string;
+    safes: Safe[];
+  }[];
+};
+
+const chainNameMap: Record<string, string> = {
+  "1": "Ethereum",
+  "10": "Optimism",
+  "56": "BSC",
+  "100": "Gnosis",
+  "137": "Polygon",
+  "42161": "Arbitrum",
+  "8453": "Base",
+  "11155111": "Sepolia",
+  "534352": "Scroll",
+  "43114": "Avalanche",
+};
+
+const SafeTable: React.FC<Props> = ({ safesByChain }) => {
+  const [expanded, setExpanded] = useState<Record<string, boolean>>({});
+  const [filter, setFilter] = useState<string>("");
+
+  const filtered = filter
+    ? safesByChain
+        .map((group) => ({
+          ...group,
+          safes: group.safes.filter((safe) =>
+            safe.owners.some((o) =>
+              o.toLowerCase().includes(filter.toLowerCase())
+            )
+          ),
+        }))
+        .filter((g) => g.safes.length > 0)
+    : safesByChain;
+
+  return (
+    <div className="safe-table">
+      <input
+        type="text"
+        placeholder="Filter by owner address"
+        value={filter}
+        onChange={(e) => setFilter(e.target.value)}
+        style={{ marginBottom: "1rem", padding: "0.5rem", width: "100%" }}
+      />
+      {filtered.map(({ chainId, safes }) => (
+        <div key={chainId}>
+          <h2>{chainNameMap[chainId] || `Chain ${chainId}`}</h2>
+          <table>
+            <thead>
+              <tr>
+                <th>Safe</th>
+                <th>Threshold</th>
+                <th>Owners</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {safes.map((safe) => (
+                <React.Fragment key={safe.address}>
+                  <tr>
+                    <td>
+                      <code onClick={() => navigator.clipboard.writeText(safe.address)}>
+                        {safe.address.slice(0, 6)}...{safe.address.slice(-4)}
+                      </code>
+                    </td>
+                    <td>{safe.threshold}</td>
+                    <td>{safe.owners.length}</td>
+                    <td>
+                      <button onClick={() => setExpanded((e) => ({ ...e, [safe.address]: !e[safe.address] }))}>
+                        {expanded[safe.address] ? "Hide" : "Show"} Owners
+                      </button>
+                    </td>
+                  </tr>
+                  {expanded[safe.address] && (
+                    <tr>
+                      <td colSpan={4}>
+                        <ul>
+                          {safe.owners.map((o) => (
+                            <li key={o}>
+                              <code>{o}</code>{" "}
+                              {o.toLowerCase() === "0xafd5f60aa8eb4f488eaa0ef98c1c5b0645d9a0a0" && (
+                                <span style={{ color: "green", fontWeight: "bold" }}>You</span>
+                              )}
+                            </li>
+                          ))}
+                        </ul>
+                      </td>
+                    </tr>
+                  )}
+                </React.Fragment>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      ))}
+    </div>
+  );
+};
+
+export default SafeTable;
