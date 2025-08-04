@@ -7,7 +7,7 @@ This project is licensed under the MIT License — see the [LICENSE](./LICENSE) 
 
 # 🔐 SafeVault — Secure Dashboard for Safe{Wallet}
 
-**Live App:** [safe-vault-f44t.vercel.app](https://safe-vault-f44t.vercel.app)  
+**Live App:** [https://safe-app-eth.github.io/SafeVault-](http://reown-appkit-delta.vercel.app)  
 ✅ Safe App Ready · 🟢 GitHub Actions Enabled · ⚡️ Vercel Deployed
 
 ---
@@ -78,7 +78,7 @@ Then open [`http://localhost:3000`](http://localhost:3000) in your browser.
 
 This project uses **Vercel** for continuous deployment.
 
-🔗 **Live Site:** [https://safe-vault-f44t.vercel.app](https://safe-vault-f44t.vercel.app)  
+🔗 **Live Site:** [https://safe-app-eth.github.io/SafeVault-](https://safe-app-eth.github.io/SafeVault-)  
 🔄 Every push to `main` triggers a redeploy.
 
 ---
@@ -122,7 +122,7 @@ Loading proposals...
 
 ## 🔐 Safe Proposal Tools
 
-- ✅ **[Live Dashboard](https://safe-vault-f44t.vercel.app/)**
+- ✅ **[Live Dashboard](https://safe-app-eth.github.io/SafeVault-/)**
 - 🔄 **Automated Signing:** via `.github/workflows/sign-safe-proposals.yml`
 - ✍️ **Manual Signing:** Supported in UI via MetaMask or WalletConnect
 
