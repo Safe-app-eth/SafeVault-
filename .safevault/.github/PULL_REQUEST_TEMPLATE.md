@@ -1,62 +1,46 @@
-# Make directory if it doesn't exist
-mkdir -p .github
+ # 📦 Summary
 
-# Create the PR template file
-cat << 'EOF' > .github/PULL_REQUEST_TEMPLATE.md
-### 📦 Summary
+<!-- AUTOFILL:summary -->
+Describe what this PR does.
 
-Provide a high-level summary of the changes in this pull request.  
-What feature, fix, or refactor is being introduced?
+✅ What's Changed
 
----
+<!-- AUTOFILL:changes -->
+- List key updates
 
-### ✅ What's Changed
-
-- [ ] List key features, updates, or fixes
-- [ ] Example: Added `TransferAllAssets` component
-- [ ] Example: Fixed GitHub Actions permissions issue
-
----
-
-### 🔗 Preview Deployment
+🔗 Preview Deployment
 
 | Environment | URL |
 |-------------|-----|
-| **Vercel**  | [Preview Link](https://reown-appkit-p3i5hjwoa-safewallet-pros-projects.vercel.app) |
+| Vercel | <!-- AUTOFILL:vercel_preview_url --> |
 
----
-
-### 🧪 Testing Checklist
+🧪 Testing Checklist
 
 - [ ] Functionality verified locally
 - [ ] CI passes on GitHub Actions
 - [ ] AppKit sync behavior validated
 - [ ] Works across EVM chains (Ethereum, Arbitrum, Polygon)
 
----
+🧷 PR Type
 
-### 🔖 Related Issues
+- [ ] 🐛 Bug Fix
+- [ ] ✨ Feature
+- [ ] 🛠 Refactor
+- [ ] 📄 Documentation
+- [ ] ⚙️ CI/CD
 
-Closes #  
-Related to #  
-Generated from commit(s): `short-hash`
+🔖 Related Issues
 
----
+Closes #
+Related to #
+Generated from commit(s): <!-- AUTOFILL:commit_hash -->
 
-### 🔖 Badges
+🔖 Badges
 
-![CI](https://github.com/thegoodeth/safevault/actions/workflows/ci.yml/badge.svg)  
-![Vercel](https://vercel.com/api/badges/reown-appkit/deploy-status.svg)
+[![CI](https://github.com/Safe-app-eth/SafeVault/actions/workflows/ci.yml/badge.svg)](https://github.com/Safe-app-eth/SafeVault/actions)  
+[![Vercel](https://vercelbadge.vercel.app/api/user/project)](https://safe-vault-f44t.vercel.app)
 
----
+🙏 Thanks!
 
-### 🙏 Thanks!
-
-> Keep SafeVault secure and scalable 🚀  
-> Every line of code moves us forward.
-EOF
-
-# Add, commit, and push to your branch
-git add .github/PULL_REQUEST_TEMPLATE.md
-git commit -m "📝 Add default pull request template for SafeVault"
-git push origin alert-autofix-27
+Keep SafeVault secure and scalable 🚀  
+Every line of code moves us forward.
