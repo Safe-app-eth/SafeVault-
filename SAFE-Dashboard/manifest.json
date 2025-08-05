@@ -1,0 +1,7 @@
+{
+  "name": "SafeVault Multisig Dashboard",
+  "description": "Track Safe proposals and signers in real time.",
+  "iconPath": "logo.svg",
+  "chainIds": [1, 5, 137],
+  "url": "."
+}
