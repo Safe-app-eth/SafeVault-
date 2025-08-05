@@ -1,0 +1,11 @@
+import SafeAppsSDK from '@safe-global/safe-apps-sdk';
+
+const sdk = new SafeAppsSDK({
+  allowedDomains: [/app.safe.global$/],
+  debug: false,
+});
+
+(async () => {
+  const safeInfo = await sdk.safe.getInfo();
+  console.log('Connected Safe:', safeInfo.safeAddress);
+})();
