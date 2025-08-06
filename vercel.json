@@ -1,0 +1,9 @@
+{
+  "name": "safevault-dashboard",
+  "description": "Static Safe{Wallet} proposal viewer with signer status, GitHub automation, multi-chain support, and live previews via Vercel.",
+  "outputDirectory": "docs",
+  "cleanUrls": true,
+  "rewrites": [],
+  "redirects": [],
+  "headers": []
+}
