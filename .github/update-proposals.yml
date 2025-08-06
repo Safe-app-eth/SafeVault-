@@ -1,20 +1,35 @@
-# 1. Create a new branch
-git checkout -b feat/dashboard-github-pages
+name: ⏱️ Update Safe Proposals
 
-# 2. Add your changes
-git add docs index.html docs/proposals.json docs/.nojekyll .github/workflows/update-proposals.yml README.md
+on:
+  schedule:
+    - cron: "*/15 * * * *"
+  workflow_dispatch:
 
-# 3. Commit
-git commit -m "chore: add GitHub Pages dashboard + auto-sync Action"
+jobs:
+  update-proposals:
+    runs-on: ubuntu-latest
 
-# 4. Push branch
-git push --set-upstream origin feat/dashboard-github-pages
+    steps:
+      - name: 🧾 Checkout repo
+        uses: actions/checkout@v3
 
-# 5. Open PR via GitHub CLI
-gh pr create \
-  --title "✨ Add SafeVault GitHub Pages Dashboard + Proposals Sync" \
-  --body "This PR adds a static dashboard under docs/ and an automated GH Action to sync proposals.json every 15 minutes. It enables instant dashboard hosting and auto updating." \
-  --base main \
-  --head feat/dashboard-github-pages \
-  --label chore \
-  --reviewer @your-reviewer
+      - name: ⚙️ Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: 📦 Install dependencies
+        run: npm install
+
+      - name: 🔐 Fetch latest proposals (Safe SDK)
+        run: node .github/scripts/fetch-proposals.js
+        env:
+          SAFE_ADDRESS: ${{ secrets.SAFE_ADDRESS }}
+          CHAIN_ID: "1"
+
+      - name: ✅ Commit & push if changed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add docs/proposals.json
+          git diff --quiet && echo "No changes" || (git commit -m "Update proposals.json [bot]" && git push)
