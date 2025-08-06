@@ -1,7 +1,7 @@
 {
   "name": "safevault",
   "version": "1.0.0",
-  "description": "SafeVault – Secure multisig governance, automation, and Safe Apps integration.",
+  "description": "SafeVault – Secure multisig governance with GitHub Pages dashboard, Safe SDK, AppKit, Vercel automation, and WalletConnect signer integration.",
   "author": "thegoodeth",
   "license": "MIT",
   "homepage": "https://thegoodeth.github.io/safevault",
@@ -18,7 +18,12 @@
     "reown",
     "dao",
     "ethers",
-    "appkit"
+    "appkit",
+    "safe-sdk",
+    "walletconnect",
+    "vercel",
+    "github-pages",
+    "dashboard"
   ],
   "scripts": {
     "dev": "next dev",
