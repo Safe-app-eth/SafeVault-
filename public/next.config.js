@@ -1,10 +1,15 @@
-const withPWA = require('next-pwa')({
-  dest: 'public',
-  register: true,
-  skipWaiting: true,
-});
-
-module.exports = withPWA({
-  reactStrictMode: true,
-  swcMinify: true,
-});
+module.exports = {
+  async headers() {
+    return [
+      {
+        source: '/(.*)',
+        headers: [
+          {
+            key: 'X-Frame-Options',
+            value: 'ALLOWALL', // Required for Safe iframe
+          },
+        ],
+      },
+    ];
+  },
+}
