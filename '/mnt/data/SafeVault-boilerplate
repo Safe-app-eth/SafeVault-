@@ -1,0 +1,54 @@
+# Add more features to the SafeVault boilerplate:
+# Reown AppKit auto-approval hook
+# Signer logic placeholder
+# Deployment preview example (Vercel & Replit)
+
+extended_files = {
+    "safevault-boilerplate/hooks/useAutoApprove.ts": """import { useEffect } from 'react'
+import { useAppKit } from 'appkit'
+
+export const useAutoApprove = () => {
+  const { txs, approveTransaction } = useAppKit()
+
+  useEffect(() => {
+    if (txs?.length > 0) {
+      txs.forEach(tx => {
+        if (tx.status === 'PENDING') {
+          approveTransaction(tx.id)
+        }
+      })
+    }
+  }, [txs])
+}
+""",
+    "safevault-boilerplate/lib/isSafeSigner.ts": """import { useEffect, useState } from 'react'
+import { useSafeAppsSDK } from '@safe-global/safe-apps-react-sdk'
+
+export const useIsSafeSigner = (address: string) => {
+  const { safe } = useSafeAppsSDK()
+  const [isOwner, setIsOwner] = useState(false)
+
+  useEffect(() => {
+    if (safe?.owners?.includes(address)) {
+      setIsOwner(true)
+    }
+  }, [safe, address])
+
+  return isOwner
+}
+""",
+    "safevault-boilerplate/.replit": """run = "npm run dev"
+language = "nodejs"
+entrypoint = "index.js"
+""",
+    "safevault-boilerplate/vercel.json": """{
+  "name": "safevault-dashboard",
+  "description": "SafeVault Dashboard with GitHub automation, Safe SDK, WalletConnect, and AppKit integration.",
+  "cleanUrls": true,
+  "rewrites": [
+    { "source": "/api/(.*)", "destination": "/backend/api/$1" }
+  ],
+  "redirects": [
+    { "source": "/", "destination": "/docs/index.html", "permanent": true }
+  ]
+}
