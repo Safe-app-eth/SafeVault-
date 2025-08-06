@@ -27,6 +27,9 @@ jobs:
           SAFE_ADDRESS: ${{ secrets.SAFE_ADDRESS }}
           CHAIN_ID: "1"
 
+      - name: Fetch latest proposals
+        run: curl https://your-backend/api/proposals > docs/proposals.json
+      
       - name: ✅ Commit & push if changed
         run: |
           git config user.name "github-actions[bot]"
