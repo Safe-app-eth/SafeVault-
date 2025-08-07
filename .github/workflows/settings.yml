@@ -1,5 +1,9 @@
-default-workflow-permissions:
-  actions: read
+on:
+  push:
+    branches: [main]
+
+permissions:
   contents: read
   id-token: write
+  actions: read
   pull-requests: write
