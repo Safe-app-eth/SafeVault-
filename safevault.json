@@ -9,13 +9,7 @@
   },
   "url": "https://safe-app-eth.github.io/SafeVault-Frontend",
   "chainIds": [
-    "1",      // Ethereum
-    "137",    // Polygon
-    "42161",  // Arbitrum
-    "10",     // Optimism
-    "100",    // Gnosis Chain
-    "8453",   // Base
-    "324"     // zkSync Era
+    "1", "137", "42161", "10", "100", "8453", "324"
   ],
   "providerUrls": {
     "1": "https://rpc.ankr.com/eth",
@@ -37,3 +31,78 @@
     "pwa"
   ]
 }
+
+🧾 Checklist
+
+Item
+Status
+Notes
+id + name + description
+✅ Complete
+Unique, clear branding
+iconPath
+✅ SVG
+128x128 recommended, hosted at GH Pages
+url
+✅ Public
+Uses GitHub Pages + next export
+accessControl
+✅ Secured
+DOMAIN_ALLOWLIST used
+chainIds (multi-chain support)
+✅ 7 chains
+All EVM supported
+providerUrls
+✅ RPCs
+Stable, public endpoints
+tags
+✅ Indexed
+Useful for discoverability
+Hosted on GitHub Pages
+✅ Yes
+With auto-export support
+Works inside Safe App iframe
+✅ Confirmed
+Uses Safe SDK + signer-aware UI
+
+🧪 Recommended QA before merging
+	•	✅ Confirm logo.svg loads at:
+
+https://safe-app-eth.github.io/SafeVault-Frontend/logo.svg
+
+•	✅ Confirm your manifest is live at:
+
+https://safe-app-eth.github.io/SafeVault-Frontend/safevault.json
+
+•	✅ Confirm manifest.json (for iframe sandboxing) also exists and is valid:
+
+{
+  "name": "SafeVault",
+  "description": "Governance + Automation for Safe multisigs.",
+  "iconPath": "./logo.svg",
+  "version": "1.0.0",
+  "appUrl": "https://safe-app-eth.github.io/SafeVault-Frontend"
+}
+
+
+📮 Submission Comment (for PRs to Safe Ecosystem)
+
+Add SafeVault to Safe Apps List
+
+This PR adds the safevault.json entry for SafeVault – a governance and automation platform built on Safe SDK, Reown AppKit, and GitHub Actions.
+
+📦 Highlights
+	•	Proposal creation via GitHub issues
+	•	Reown login + signer mapping
+	•	Telegram bot notifications
+	•	PWA UI with Safe Apps SDK
+	•	Supports 7+ EVM networks
+
+🔗 Metadata
+	•	App: SafeVault
+	•	Repo: thegoodeth/SafeVault
+	•	Icon: /logo.svg
+	•	Manifest: /safevault.json
+
+Ready for inclusion in the Safe Apps ecosystem. Happy to provide walkthroughs or demos if needed!
+
