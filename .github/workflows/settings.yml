@@ -1,0 +1,5 @@
+default-workflow-permissions:
+  actions: read
+  contents: read
+  id-token: write
+  pull-requests: write
