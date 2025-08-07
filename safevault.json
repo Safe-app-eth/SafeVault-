@@ -1,0 +1,39 @@
+{
+  "id": "safevault",
+  "name": "SafeVault",
+  "iconPath": "https://safe-app-eth.github.io/SafeVault-Frontend/logo.svg",
+  "description": "SafeVault is a time-locked governance and automation platform for Safe. It supports proposal automation, signer tracking, Reown login, Telegram bots, and GitHub Actions integration.",
+  "accessControl": {
+    "type": "DOMAIN_ALLOWLIST",
+    "value": ["safe-app-eth.github.io"]
+  },
+  "url": "https://safe-app-eth.github.io/SafeVault-Frontend",
+  "chainIds": [
+    "1",      // Ethereum
+    "137",    // Polygon
+    "42161",  // Arbitrum
+    "10",     // Optimism
+    "100",    // Gnosis Chain
+    "8453",   // Base
+    "324"     // zkSync Era
+  ],
+  "providerUrls": {
+    "1": "https://rpc.ankr.com/eth",
+    "137": "https://polygon-rpc.com",
+    "42161": "https://arb1.arbitrum.io/rpc",
+    "10": "https://mainnet.optimism.io",
+    "100": "https://rpc.gnosischain.com",
+    "8453": "https://mainnet.base.org",
+    "324": "https://mainnet.era.zksync.io"
+  },
+  "tags": [
+    "governance",
+    "automation",
+    "multisig",
+    "safe-app",
+    "reown",
+    "telegram",
+    "sdk",
+    "pwa"
+  ]
+}
