@@ -1,0 +1,10 @@
+# .github/settings.yml or org policy (example structure)
+allowed-actions:
+  github-owned: true
+  verified: true
+  patterns:
+    - thegoodeth12/safe-cli@*
+    - thegoodeth12/safe-vault@*
+    - octo-org/octo-repo@v2
+    - octo-org/*
+    - octo-org/octo-repo/*
