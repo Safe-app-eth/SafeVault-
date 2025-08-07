@@ -1,5 +1,8 @@
-name: 🛡️ GitHub Actions Security Linter
-
+name: 🛡️ GitHub Actions Security Linte
+{
+  }
+name: Check for permissions block
+        run: bash .github/scripts/check-permissions.sh
 on:
   pull_request:
     paths:
