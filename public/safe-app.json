@@ -1,10 +1,6 @@
 {
-  "name": "SafeVault 🔐",
-  "description": "Your secure Safe-native dashboard for signing, proposing, and managing multisig operations.",
-  "iconPath": "icon.svg",
-  "tags": ["finance", "signing", "dashboard"],
-  "developer": {
-    "name": "Safe-app-eth",
-    "url": "https://github.com/Safe-app-eth"
-  }
+  "name": "SafeVault",
+  "description": "Manage your multisig automation and proposals via SafeVault",
+  "iconPath": "/logo.svg",
+  "safeAppsSDKVersion": "1.4.0"
 }
