@@ -1,114 +1,51 @@
-/** @type {import('next').NextConfig} */
-const nextConfig = {
-  output: 'export',
-  trailingSlash: true,
-  images: { unoptimized: true },
-  assetPrefix: process.env.NODE_ENV === 'production' ? './' : ''
-};
-module.exports = nextConfig;
 {
-  "name": "safevault",
-  "version": "1.0.0",
-  "description": "SafeVault \u2013 Secure multisig governance with GitHub Pages dashboard, Safe SDK, AppKit, Vercel automation, and WalletConnect signer integration.",
-  "author": "thegoodeth",
-  "license": "MIT",
-  "homepage": "https://thegoodeth.github.io/safevault",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/thegoodeth/safevault"
-  },
-  "keywords": [
-    "safe-app",
-    "gnosis-safe",
-    "multisig",
-    "governance",
-    "automation",
-    "reown",
-    "dao",
-    "ethers",
-    "appkit",
-    "safe-sdk",
-    "walletconnect",
-    "vercel",
-    "github-pages",
-    "dashboard"
-  ],
-  "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "export": "next export",
-    "lint": "next lint",
-    "format": "prettier --write .",
-    "typecheck": "tsc --noEmit",
-    "analyze": "ANALYZE=true next build"
-  },
-  "dependencies": {
-    "@safe-global/safe-apps-react-sdk": "^0.10.5",
-    "@safe-global/protocol-kit": "^1.6.2",
-    "@safe-global/safe-core-sdk": "^7.2.0",
-    "@safe-global/safe-ethers-adapters": "^7.2.0",
-    "appkit": "latest",
-    "ethers": "^6.8.1",
-    "reown": "latest",
-    "next": "^15.0.0",
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0"
-  },
-  "devDependencies": {
-    "eslint": "^9.0.0",
-    "eslint-config-next": "^15.0.0",
-    "typescript": "^5.4.2",
-    "tailwindcss": "^4.0.0",
-    "postcss": "^8.4.35",
-    "autoprefixer": "^10.4.19",
-    "prettier": "^3.2.5"
-  },
-  "engines": {
-    "node": ">=18.0.0",
-    "npm": ">=9.0.0"
-  }
-}
-{
-  "compilerOptions": {
-    "target": "ES2020",
-    "module": "ESNext",
-    "lib": [
-      "DOM",
-      "DOM.Iterable",
-      "ES2020"
+    "name": "safevault",
+    "version": "1.0.0",
+    "description": "SafeVault – A secure Safe{Wallet} automation and governance platform.",
+    "scripts": {
+        "dev": "vite",
+        "build": "vite build",
+        "preview": "vite preview",
+        "lint": "eslint . --ext .ts,.tsx,.js,.jsx",
+        "format": "prettier --write .",
+        "test": "jest"
+    },
+    "dependencies": {
+        "@safe-global/protocol-kit": "^1.0.0",
+        "@safe-global/safe-apps-provider": "^0.17.0",
+        "@safe-global/safe-apps-sdk": "^8.1.0",
+        "@safe-global/safe-core-sdk": "^4.0.0",
+        "@safe-global/safe-ethers-lib": "^1.9.2",
+        "@walletconnect/client": "^1.8.0",
+        "@walletconnect/web3-provider": "^1.8.0",
+        "ethers": "^5.7.2",
+        "node-fetch": "^2.6.12",
+        "reown": "^1.0.0",
+        "typescript": "^5.4.0"
+    },
+    "devDependencies": {
+        "@types/jest": "^29.5.3",
+        "@types/node": "^20.5.0",
+        "@types/react": "^18.2.12",
+        "@types/react-dom": "^18.2.5",
+        "@vitejs/plugin-react": "^4.0.0",
+        "eslint": "^8.50.0",
+        "eslint-config-prettier": "^9.0.0",
+        "eslint-plugin-react": "^7.33.2",
+        "jest": "^29.7.0",
+        "prettier": "^3.0.3",
+        "vite": "^4.5.0"
+    },
+    "keywords": [
+        "Safe",
+        "SafeVault",
+        "WalletConnect",
+        "Reown",
+        "Safe{Wallet}",
+        "Gnosis Safe",
+        "Ethereum",
+        "Multi-sig"
     ],
-    "allowJs": true,
-    "skipLibCheck": true,
-    "esModuleInterop": true,
-    "moduleResolution": "Node",
-    "resolveJsonModule": true,
-    "isolatedModules": true,
-    "jsx": "preserve",
-    "noEmit": true,
-    "incremental": true
-  },
-  "include": [
-    "next-env.d.ts",
-    "**/*.ts",
-    "**/*.tsx"
-  ],
-  "exclude": [
-    "node_modules"
-  ]
-}
-{
-  "version": 2,
-  "builds": [
-    {
-      "src": "next.config.js",
-      "use": "@vercel/next"
-    }
-  ],
-  "routes": [
-    {
-      "src": "/(.*)",
-      "dest": "/"
-    }
-  ]
+    "author": "thegoodeth",
+    "license": "MIT"
 }
