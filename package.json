@@ -11,7 +11,7 @@
         "test": "jest"
     },
     "dependencies": {
-        "@safe-global/protocol-kit": "^1.0.0",
+        "@safe-global/protocol-kit": "^6.0.0",
         "@safe-global/safe-apps-provider": "^0.17.0",
         "@safe-global/safe-apps-sdk": "^8.1.0",
         "@safe-global/safe-core-sdk": "^4.0.0",
