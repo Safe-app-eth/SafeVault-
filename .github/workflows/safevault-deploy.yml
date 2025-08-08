@@ -1,0 +1,78 @@
+name: SafeVault CI/CD
+
+on:
+  push:
+    branches:
+      - main
+      - dev
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 📥 Checkout repository
+        uses: actions/checkout@v4
+
+      - name: ⚡ Use Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: 📦 Install dependencies
+        run: |
+          rm -f package-lock.json
+          npm install --legacy-peer-deps
+
+      - name: 🛠 Build project with manifest
+        run: npm run build:full
+
+      - name: 📤 Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: safevault-build
+          path: dist
+
+      - name: 📤 Upload manifest artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: safe-app-manifest
+          path: safe-app.json
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    steps:
+      - name: 📥 Download build artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: safevault-build
+          path: dist
+
+      - name: 📥 Download manifest artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: safe-app-manifest
+          path: .
+
+      - name: 🚀 Deploy to Vercel
+        uses: amondnet/vercel-action@v25
+        with:
+          vercel-token: ${{ secrets.VERCEL_TOKEN }}
+          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
+          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
+          working-directory: ./
+
+      - name: 📄 Upload Safe App manifest (if token is set)
+        if: env.SAFE_GATEWAY_TOKEN != ''
+        env:
+          SAFE_GATEWAY_TOKEN: ${{ secrets.SAFE_GATEWAY_TOKEN }}
+        run: |
+          echo "Uploading safe-app.json to Safe Gateway..."
+          curl -X POST \
+            -H "Content-Type: application/json" \
+            -H "Authorization: Bearer $SAFE_GATEWAY_TOKEN" \
+            --data-binary @safe-app.json \
+            https://safe-apps.gateway.safe.global/api/v1/apps || echo "⚠️ Skipping Safe Gateway upload (token not set)"
