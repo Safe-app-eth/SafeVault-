@@ -1,7 +1,15 @@
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  output: 'export',
+  trailingSlash: true,
+  images: { unoptimized: true },
+  assetPrefix: process.env.NODE_ENV === 'production' ? './' : ''
+};
+module.exports = nextConfig;
 {
   "name": "safevault",
   "version": "1.0.0",
-  "description": "SafeVault – Secure multisig governance, automation, and Safe Apps integration.",
+  "description": "SafeVault \u2013 Secure multisig governance with GitHub Pages dashboard, Safe SDK, AppKit, Vercel automation, and WalletConnect signer integration.",
   "author": "thegoodeth",
   "license": "MIT",
   "homepage": "https://thegoodeth.github.io/safevault",
@@ -18,17 +26,22 @@
     "reown",
     "dao",
     "ethers",
-    "appkit"
+    "appkit",
+    "safe-sdk",
+    "walletconnect",
+    "vercel",
+    "github-pages",
+    "dashboard"
   ],
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
     "export": "next export",
-    "analyze": "ANALYZE=true next build",
+    "lint": "next lint",
     "format": "prettier --write .",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "analyze": "ANALYZE=true next build"
   },
   "dependencies": {
     "@safe-global/safe-apps-react-sdk": "^0.10.5",
@@ -55,4 +68,47 @@
     "node": ">=18.0.0",
     "npm": ">=9.0.0"
   }
+}
+{
+  "compilerOptions": {
+    "target": "ES2020",
+    "module": "ESNext",
+    "lib": [
+      "DOM",
+      "DOM.Iterable",
+      "ES2020"
+    ],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "moduleResolution": "Node",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "jsx": "preserve",
+    "noEmit": true,
+    "incremental": true
+  },
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
+}
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "next.config.js",
+      "use": "@vercel/next"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "/"
+    }
+  ]
 }
