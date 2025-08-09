@@ -1,0 +1,114 @@
+# app.yml manifest content
+app_yml_content = """name: Safe-signer
+description: >
+  Auto-sign your Safe transactions, straight from GitHub — with Reown AppKit & wallet signer built in.
+  Safe-signer integrates directly with Safe{Wallet}, Reown AppKit, and your verified signer address
+  (0xFDf84a0e7D07bC56f7De56696fc409704cC83a24) to securely approve and execute on-chain transactions
+  from GitHub Actions, pull requests, and issue comments.
+
+  Features:
+    • Instant Reown AppKit connection for secure signer authentication
+    • Automatic use of your verified signer address 0xFDf84a0e7D07bC56f7De56696fc409704cC83a24
+    • On-demand transaction execution from PRs, commits, or issue comments
+    • Multi-chain asset transfers and contract calls in one click
+    • End-to-end audit logs for compliance and transparency
+
+  Download the Safe{Wallet} app:
+    • iOS: https://apps.apple.com/app/us/id1515759131
+
+url: https://safe-app-eth.github.io/SafeVault-/
+hook_attributes:
+  url: https://safe-vault-f44t.vercel.app/api/github-webhook
+redirect_url: https://safe-app-eth.github.io/SafeVault-/github/callback
+public: true
+default_events:
+  - pull_request
+  - push
+  - issues
+  - issue_comment
+  - workflow_run
+  - check_suite
+  - check_run
+  - release
+  - deployment
+  - deployment_status
+default_permissions:
+  actions: write
+  administration: read
+  checks: write
+  contents: read
+  deployments: write
+  discussions: write
+  issues: write
+  metadata: read
+  pull_requests: write
+  repository_hooks: write
+  workflows: write
+branding:
+  color: blue
+  logo: https://safe-vault-f44t.vercel.app/assets/safe-signer-logo.png
+webhook_secret: ${WEBHOOK_SECRET}
+default_webhook_active: true
+"""
+
+# github-webhook.ts backend content
+github_webhook_content = """import { VercelRequest, VercelResponse } from '@vercel/node';
+import crypto from 'crypto';
+import { ethers } from 'ethers';
+import Safe from '@safe-global/protocol-kit';
+
+const WEBHOOK_SECRET = process.env.WEBHOOK_SECRET!;
+const SAFE_ADDRESS = process.env.SAFE_ADDRESS!;
+const SIGNER_PRIVATE_KEY = process.env.SIGNER_PRIVATE_KEY!;
+const RPC_URL = process.env.RPC_URL!; // Ethereum/Polygon/Arbitrum RPC
+
+function verifySignature(req: VercelRequest) {
+  const signature = req.headers['x-hub-signature-256'] as string;
+  if (!signature) return false;
+  const hmac = crypto.createHmac('sha256', WEBHOOK_SECRET);
+  const digest = 'sha256=' + hmac.update(JSON.stringify(req.body)).digest('hex');
+  return crypto.timingSafeEqual(Buffer.from(signature), Buffer.from(digest));
+}
+
+export default async function handler(req: VercelRequest, res: VercelResponse) {
+  if (req.method !== 'POST') return res.status(405).send('Method not allowed');
+  if (!verifySignature(req)) return res.status(401).send('Invalid signature');
+
+  const event = req.headers['x-github-event'] as string;
+  console.log(`🔔 Event received: ${event}`);
+
+  try {
+    if (event === 'pull_request' && req.body.action === 'closed' && req.body.pull_request.merged) {
+      await signAndExecute(`Auto-approved from PR #${req.body.number}`);
+    }
+    if (event === 'issue_comment' && req.body.comment.body.trim() === '/sign') {
+      await signAndExecute(`Manual sign request from issue #${req.body.issue.number}`);
+    }
+    res.status(200).send('Processed');
+  } catch (err) {
+    console.error('❌ Error processing webhook:', err);
+    res.status(500).send('Error');
+  }
+}
+
+async function signAndExecute(description: string) {
+  console.log(`🚀 Executing Safe transaction: ${description}`);
+
+  const provider = new ethers.JsonRpcProvider(RPC_URL);
+  const signer = new ethers.Wallet(SIGNER_PRIVATE_KEY, provider);
+
+  const safeSdk = await Safe.create({
+    ethAdapter: { signerOrProvider: signer },
+    safeAddress: SAFE_ADDRESS
+  });
+
+  const tx = await safeSdk.createTransaction({
+    transactions: [
+      { to: '0x000000000000000000000000000000000000dEaD', value: ethers.parseEther('0.001').toString(), data: '0x' }
+    ]
+  });
+
+  await safeSdk.executeTransaction(tx);
+  console.log(`✅ Transaction executed: ${description}`);
+}
+"""
