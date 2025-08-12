@@ -1,18 +1,13 @@
-import express from 'express'
-import bodyParser from 'body-parser'
-import sendTransaction from './sendTransaction.js'
-
-const app = express()
-app.use(bodyParser.json())
-
-app.post('/transaction', async (req, res) => {
-  try {
-    const result = await sendTransaction(req.body)
-    res.json({ success: true, result })
-  } catch (error) {
-    console.error(error)
-    res.status(500).json({ success: false, error: error.message })
-  }
+fetch("http://localhost:3000/transaction", {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json",
+    "Accept": "application/json"
+  },
+  body: JSON.stringify({
+    to: "0xRecipientAddressHere",
+    value: "0.01"
+  })
 })
-
-app.listen(3000, () => console.log("SafeVault API running on port 3000"))
+.then(res => res.json())
+.then(console.log)
