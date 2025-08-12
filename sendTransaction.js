@@ -4,38 +4,30 @@ import dotenv from 'dotenv'
 
 dotenv.config()
 
-async function main() {
+export default async function sendTransaction({ to, value, data = "0x" }) {
   const provider = new ethers.JsonRpcProvider(process.env.RPC_URL)
   const signer = new ethers.Wallet(process.env.PRIVATE_KEY, provider)
-
-  console.log("Signer Address:", await signer.getAddress())
 
   const safeSdk = await Safe.create({
     ethAdapter: { ethers, signerOrProvider: signer },
     safeAddress: process.env.SAFE_ADDRESS
   })
 
-  // Transaction data — for example, sending ETH
-  const amountInWei = ethers.parseEther("0.01")
+  const amountInWei = ethers.parseEther(value.toString())
+
   const transaction = {
-    to: "0xRecipientAddressHere", // replace with recipient
+    to,
     value: amountInWei.toString(),
-    data: "0x"
+    data
   }
 
-  // Create Safe transaction
   const safeTransaction = await safeSdk.createTransaction({ transactions: [transaction] })
-
-  // Sign transaction
   const signedTransaction = await safeSdk.signTransaction(safeTransaction)
-
-  // Execute transaction
   const txResponse = await safeSdk.executeTransaction(signedTransaction)
-  console.log("Transaction Hash:", txResponse.hash)
 
-  // Wait for confirmation
   const receipt = await txResponse.wait()
-  console.log("Transaction confirmed in block:", receipt.blockNumber)
+  return {
+    hash: txResponse.hash,
+    blockNumber: receipt.blockNumber
+  }
 }
-
-main().catch(console.error)
