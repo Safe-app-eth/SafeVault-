@@ -13,25 +13,34 @@ fetch('config/config.json')
     });
 
     // Display safes for selected chain
-    function showSafes(chainId) {
+    async function showSafes(chainId) {
       safeList.innerHTML = '';
       const safes = config.addedSafes[chainId];
       if (!safes) return;
 
-      Object.entries(safes).forEach(([safeAddress, safe]) => {
+      for (const [safeAddress, safe] of Object.entries(safes)) {
         const safeDiv = document.createElement('div');
-        safeDiv.innerHTML = `<strong>${safeAddress}</strong> (Threshold: ${safe.threshold})`;
-        
+        safeDiv.className = 'safe';
+
+        const safeHeader = document.createElement('h3');
+        safeHeader.innerHTML = `<a href="https://etherscan.io/address/${safeAddress}" target="_blank">${safeAddress}</a> (Threshold: ${safe.threshold})`;
+        safeDiv.appendChild(safeHeader);
+
         const ownersUl = document.createElement('ul');
-        safe.owners.forEach(owner => {
+        for (const owner of safe.owners) {
           const li = document.createElement('li');
-          li.textContent = config.addressBook[chainId]?.[owner.value] || owner.value;
+          const ownerName = config.addressBook[chainId]?.[owner.value] || owner.value;
+          
+          // Hidden balances (dummy example, static)
+          const balance = 'Loading...'; // will replace with live call if needed
+          
+          li.innerHTML = `<a href="https://etherscan.io/address/${owner.value}" target="_blank">${ownerName}</a> - Balance: ${balance}`;
           ownersUl.appendChild(li);
-        });
+        }
 
         safeDiv.appendChild(ownersUl);
         safeList.appendChild(safeDiv);
-      });
+      }
     }
 
     chainSelect.addEventListener('change', (e) => showSafes(e.target.value));
