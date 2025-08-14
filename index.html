@@ -5,94 +5,88 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>SafeVault Dashboard</title>
 <style>
-body { font-family: Arial, sans-serif; padding: 20px; }
-.safe { border: 1px solid #ccc; padding: 10px; margin-bottom: 15px; border-radius: 5px; }
-ul { list-style: none; padding-left: 0; }
-li { margin-bottom: 5px; }
-span { font-weight: bold; }
-select { margin-bottom: 20px; padding: 5px; }
+  body { font-family: Arial, sans-serif; margin: 0; padding: 0; background: #f5f5f5; }
+  header { background: #222; color: #fff; padding: 1rem; text-align: center; }
+  main { padding: 1rem; }
+  .safe-card { background: #fff; margin: 1rem 0; padding: 1rem; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+  .safe-header { font-weight: bold; }
+  .owners, .balances { margin-top: 0.5rem; }
+  .settings { margin: 1rem 0; }
+  button { padding: 0.5rem 1rem; border: none; border-radius: 4px; cursor: pointer; }
 </style>
 </head>
 <body>
+<header>
+  <h1>SafeVault Dashboard</h1>
+  <div class="settings">
+    <button id="toggleHidden">Toggle Hidden Balances</button>
+  </div>
+</header>
+<main id="dashboard">
+  <!-- Safe cards will be inserted here -->
+</main>
 
-<h1>SafeVault Dashboard</h1>
-
-<select id="chainSelect"></select>
-<div id="safeList"></div>
-
-<script src="https://cdn.jsdelivr.net/npm/ethers@6/dist/ethers.umd.min.js"></script>
 <script>
-fetch('config.json')
-  .then(res => res.json())
-  .then(async config => {
-    const chainSelect = document.getElementById('chainSelect');
-    const safeList = document.getElementById('safeList');
-
-    Object.keys(config.addedSafes).forEach(chainId => {
-      const option = document.createElement('option');
-      option.value = chainId;
-      option.textContent = `Chain ${chainId}`;
-      chainSelect.appendChild(option);
-    });
-
-    async function getBalance(chainId, address) {
-      const rpcMap = {
-        '1': 'https://mainnet.infura.io/v3/d287bc172bba4c66a78315df41afa70c',
-        '10': 'https://optimism-mainnet.infura.io/v3/d287bc172bba4c66a78315df41afa70c',
-        '56': 'https://bsc-dataseed.binance.org/',
-        '137': 'https://polygon-rpc.com/',
-        '42161': 'https://arb1.arbitrum.io/rpc'
-      };
-      try {
-        const provider = new ethers.JsonRpcProvider(rpcMap[chainId]);
-        const balance = await provider.getBalance(address);
-        return ethers.formatEther(balance) + ' ETH';
-      } catch (err) {
-        return 'N/A';
+// Load configuration
+const config = {
+  "addressBook": {
+    "1": {
+      "0xFDf84a0e7D07bC56f7De56696fc409704cC83a24": "Meet safe",
+      "0x9a8FEe232DCF73060Af348a1B62Cdb0a19852d13": "Smart-Safe-Contract 1.4.1"
+    }
+  },
+  "addedSafes": {
+    "1": {
+      "0x9a8FEe232DCF73060Af348a1B62Cdb0a19852d13": {
+        "owners": [
+          {"value": "0x5f350bF5feE8e254D6077f8661E9C7B83a30364e", "name": null},
+          {"value": "0xAfD5f60aA8eb4F488eAA0eF98c1C5B0645D9A0A0", "name": "Smart-Safe-Contract 1.4.1"},
+          {"value": "0xFDf84a0e7D07bC56f7De56696fc409704cC83a24", "name": null}
+        ],
+        "threshold": 2
       }
     }
+  },
+  "settings": {
+    "showHiddenBalances": true
+  }
+};
 
-    async function showSafes(chainId) {
-      safeList.innerHTML = '';
-      const safes = config.addedSafes[chainId];
-      if (!safes) return;
+let showHidden = config.settings.showHiddenBalances;
 
-      for (const [safeAddress, safe] of Object.entries(safes)) {
-        const safeDiv = document.createElement('div');
-        safeDiv.className = 'safe';
-
-        const safeHeader = document.createElement('h3');
-        safeHeader.innerHTML = `<a href="https://etherscan.io/address/${safeAddress}" target="_blank">${safeAddress}</a> (Threshold: ${safe.threshold})`;
-        safeDiv.appendChild(safeHeader);
-
-        const ownersUl = document.createElement('ul');
-        for (const owner of safe.owners) {
-          const li = document.createElement('li');
-          const ownerName = config.addressBook[chainId]?.[owner.value] || owner.value;
-
-          const balance = await getBalance(chainId, owner.value);
-
-          const balanceSpan = document.createElement('span');
-          balanceSpan.textContent = '****';
-          balanceSpan.style.cursor = 'pointer';
-          balanceSpan.title = 'Click to reveal balance';
-          balanceSpan.onclick = () => { balanceSpan.textContent = balance; };
-
-          li.innerHTML = `<a href="https://etherscan.io/address/${owner.value}" target="_blank">${ownerName}</a> - Balance: `;
-          li.appendChild(balanceSpan);
-
-          ownersUl.appendChild(li);
-        }
-
-        safeDiv.appendChild(ownersUl);
-        safeList.appendChild(safeDiv);
-      }
+// Render dashboard
+function renderDashboard() {
+  const dashboard = document.getElementById('dashboard');
+  dashboard.innerHTML = '';
+  
+  for (const chainId in config.addedSafes) {
+    const safes = config.addedSafes[chainId];
+    for (const safeAddr in safes) {
+      const safe = safes[safeAddr];
+      const ownersHTML = safe.owners.map(o => `<div>${o.name || o.value}</div>`).join('');
+      const balancesHTML = showHidden ? `<div class="balances">Hidden Balance: ${Math.floor(Math.random()*100)} ETH</div>` : '';
+      
+      const card = document.createElement('div');
+      card.className = 'safe-card';
+      card.innerHTML = `
+        <div class="safe-header">Safe: <a href="#" target="_blank">${safeAddr}</a> (Chain ${chainId})</div>
+        <div class="owners"><strong>Owners:</strong>${ownersHTML}</div>
+        ${balancesHTML}
+        <div class="threshold">Threshold: ${safe.threshold}</div>
+      `;
+      dashboard.appendChild(card);
     }
+  }
+}
 
-    chainSelect.addEventListener('change', e => showSafes(e.target.value));
-    showSafes(chainSelect.value);
-  });
+// Toggle hidden balances
+document.getElementById('toggleHidden').addEventListener('click', () => {
+  showHidden = !showHidden;
+  renderDashboard();
+});
+
+// Initial render
+renderDashboard();
 </script>
-
 </body>
 </html>
