@@ -18,6 +18,6 @@
     "vite": "^5.0.0",
     "@vitejs/plugin-react": "^3.0.0",
     "firebase-tools": "^12.0.0",
-    "vercel": "^28.0.0"
+    "vercel": "^45.0.0"
   }
 }
