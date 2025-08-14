@@ -1,0 +1,14 @@
+{
+  "addressBook": {
+    "0xFDf84a0e7D07bC56f7De56696fc409704cC83a24": "Main Signer",
+    "0x1234567890abcdef1234567890abcdef12345678": "Vault Safe 1",
+    "0xabcdefabcdefabcdefabcdefabcdefabcdefabcd": "Vault Safe 2"
+  },
+  "addedSafes": {
+    "ethereum": [
+      "0xFDf84a0e7D07bC56f7De56696fc409704cC83a24",
+      "0x1234567890abcdef1234567890abcdef12345678",
+      "0xabcdefabcdefabcdefabcdefabcdefabcdefabcd"
+    ]
+  }
+}
