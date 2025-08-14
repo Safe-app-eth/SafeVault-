@@ -1,0 +1,45 @@
+{
+  "addressBook": {
+    "1": {
+      "0xFDf84a0e7D07bC56f7De56696fc409704cC83a24": "Meet safe",
+      "0x9a8FEe232DCF73060Af348a1B62Cdb0a19852d13": "Smart-Safe-Contract 1.4.1",
+      "0x56f34826Cc63151f74FA8f701E4f73C5EAae52AD": "Smart-Safe-Contract 1.4.1",
+      "0x583239e17519288E6F5E4C71de12517a54F26533": "Smart-Safe-Contract 1.4.1",
+      "0x798E6af7658A1f20e6B2A5c780D8577D4AEAF7dA": "Smart-Safe-Contract 1.4.1",
+      "0x99faAe2501464c41F7ec74c9F2615441f1A1E7b0": "Smart-Safe-Contract 1.4.1",
+      "0xA9B2a4F90d0eC7A7907C11e2a17eF345d04747bF": "Smart-Safe-Contract 1.4.1",
+      "0xc140c1CD2e587fC04DAa780d49b616F768476660": "Smart-Safe-Contract 1.4.1",
+      "0xd7D0967157DA9bf2c887D3b81617855FF25bA1C7": "Smart-Safe-Contract 1.4.1",
+      "0xfecBad5D60725EB6fd10f8936e02fa203fd27E4b": "Smart-Safe-Contract 1.4.1",
+      "0xAfD5f60aA8eb4F488eAA0eF98c1C5B0645D9A0A0": "Smart-Safe-Contract 1.4.1",
+      "0x821f2b40d965b81202b181Aba1c7a380C49Ed675": "Smart-Safe-Contract 1.4.1",
+      "0x0CD875515e9bb3DC05B283A375d043fDfDea2626": "Humorous Multi-Chain Safe"
+    },
+    "10": {
+      "0x9a8FEe232DCF73060Af348a1B62Cdb0a19852d13": "Smart-Safe-Contract 1.4.1",
+      "0xDCB55e52bF0d442A67f5965338274014168908f6": "Smart-Safe-Contract 1.4.1",
+      "0x0CD875515e9bb3DC05B283A375d043fDfDea2626": "Humorous Multi-Chain Safe",
+      "0xAfD5f60aA8eb4F488eAA0eF98c1C5B0645D9A0A0": "Smart-Safe-Contract 1.4.1"
+    }
+    /* Repeat all other chains from your JSON exactly as sent */
+  },
+  "addedSafes": {
+    "1": {
+      "0x9a8FEe232DCF73060Af348a1B62Cdb0a19852d13": {
+        "owners": [
+          {"value": "0x5f350bF5feE8e254D6077f8661E9C7B83a30364e", "name": null, "logoUri": null},
+          {"value": "0xAfD5f60aA8eb4F488eAA0eF98c1C5B0645D9A0A0", "name": "Smart-Safe-Contract 1.4.1", "logoUri": null},
+          {"value": "0x1bfD64aB61EACf714B2Aa37347057203f3AcA71f", "name": null, "logoUri": null},
+          {"value": "0xFDf84a0e7D07bC56f7De56696fc409704cC83a24", "name": null, "logoUri": null}
+        ],
+        "threshold": 2
+      }
+      /* Repeat all other safes from your JSON exactly as sent */
+    }
+  },
+  "settings": {
+    "showHiddenBalances": true,
+    "autoSignTransactions": false,
+    "theme": "dark"
+  }
+}
