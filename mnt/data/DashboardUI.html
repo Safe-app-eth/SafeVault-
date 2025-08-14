@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SafeVault Dashboard</title>
+<style>
+  body { font-family: Arial, sans-serif; margin: 0; padding: 0; background: #f5f5f5; }
+  header { background: #222; color: #fff; padding: 1rem; text-align: center; }
+  main { padding: 1rem; }
+  .safe-card { background: #fff; margin: 1rem 0; padding: 1rem; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+  .safe-header { font-weight: bold; }
+  .owners, .balances { margin-top: 0.5rem; }
+  .settings { margin: 1rem 0; }
+  button { padding: 0.5rem 1rem; border: none; border-radius: 4px; cursor: pointer; }
+</style>
+</head>
+<body>
+<header>
+  <h1>SafeVault Dashboard</h1>
+  <div class="settings">
+    <button id="toggleHidden">Toggle Hidden Balances</button>
+  </div>
+</header>
+<main id="dashboard">
+  <!-- Safe cards will be inserted here -->
+</main>
+
+<script>
+// Load configuration
+const config = {
+  "addressBook": {
+    "1": {
+      "0xFDf84a0e7D07bC56f7De56696fc409704cC83a24": "Meet safe",
+      "0x9a8FEe232DCF73060Af348a1B62Cdb0a19852d13": "Smart-Safe-Contract 1.4.1"
+    }
+  },
+  "addedSafes": {
+    "1": {
+      "0x9a8FEe232DCF73060Af348a1B62Cdb0a19852d13": {
+        "owners": [
+          {"value": "0x5f350bF5feE8e254D6077f8661E9C7B83a30364e", "name": null},
+          {"value": "0xAfD5f60aA8eb4F488eAA0eF98c1C5B0645D9A0A0", "name": "Smart-Safe-Contract 1.4.1"},
+          {"value": "0xFDf84a0e7D07bC56f7De56696fc409704cC83a24", "name": null}
+        ],
+        "threshold": 2
+      }
+    }
+  },
+  "settings": {
+    "showHiddenBalances": true
+  }
+};
+
+let showHidden = config.settings.showHiddenBalances;
+
+// Render dashboard
+function renderDashboard() {
+  const dashboard = document.getElementById('dashboard');
+  dashboard.innerHTML = '';
+  
+  for (const chainId in config.addedSafes) {
+    const safes = config.addedSafes[chainId];
+    for (const safeAddr in safes) {
+      const safe = safes[safeAddr];
+      const ownersHTML = safe.owners.map(o => `<div>${o.name || o.value}</div>`).join('');
+      const balancesHTML = showHidden ? `<div class="balances">Hidden Balance: ${Math.floor(Math.random()*100)} ETH</div>` : '';
+      
+      const card = document.createElement('div');
+      card.className = 'safe-card';
+      card.innerHTML = `
+        <div class="safe-header">Safe: <a href="#" target="_blank">${safeAddr}</a> (Chain ${chainId})</div>
+        <div class="owners"><strong>Owners:</strong>${ownersHTML}</div>
+        ${balancesHTML}
+        <div class="threshold">Threshold: ${safe.threshold}</div>
+      `;
+      dashboard.appendChild(card);
+    }
+  }
+}
+
+// Toggle hidden balances
+document.getElementById('toggleHidden').addEventListener('click', () => {
+  showHidden = !showHidden;
+  renderDashboard();
+});
+
+// Initial render
+renderDashboard();
+</script>
+</body>
+</html>
