@@ -1,18 +1,98 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>SafeVault Dashboard</title>
-  <link rel="stylesheet" href="styles/main.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SafeVault Dashboard</title>
+<style>
+body { font-family: Arial, sans-serif; padding: 20px; }
+.safe { border: 1px solid #ccc; padding: 10px; margin-bottom: 15px; border-radius: 5px; }
+ul { list-style: none; padding-left: 0; }
+li { margin-bottom: 5px; }
+span { font-weight: bold; }
+select { margin-bottom: 20px; padding: 5px; }
+</style>
 </head>
 <body>
-  <header>
-    <h1>SafeVault Dashboard</h1>
-    <select id="chainSelect"></select>
-  </header>
 
-  <div id="safeList"></div>
+<h1>SafeVault Dashboard</h1>
 
-  <script src="main.js"></script>
+<select id="chainSelect"></select>
+<div id="safeList"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/ethers@6/dist/ethers.umd.min.js"></script>
+<script>
+fetch('config.json')
+  .then(res => res.json())
+  .then(async config => {
+    const chainSelect = document.getElementById('chainSelect');
+    const safeList = document.getElementById('safeList');
+
+    Object.keys(config.addedSafes).forEach(chainId => {
+      const option = document.createElement('option');
+      option.value = chainId;
+      option.textContent = `Chain ${chainId}`;
+      chainSelect.appendChild(option);
+    });
+
+    async function getBalance(chainId, address) {
+      const rpcMap = {
+        '1': 'https://mainnet.infura.io/v3/d287bc172bba4c66a78315df41afa70c',
+        '10': 'https://optimism-mainnet.infura.io/v3/d287bc172bba4c66a78315df41afa70c',
+        '56': 'https://bsc-dataseed.binance.org/',
+        '137': 'https://polygon-rpc.com/',
+        '42161': 'https://arb1.arbitrum.io/rpc'
+      };
+      try {
+        const provider = new ethers.JsonRpcProvider(rpcMap[chainId]);
+        const balance = await provider.getBalance(address);
+        return ethers.formatEther(balance) + ' ETH';
+      } catch (err) {
+        return 'N/A';
+      }
+    }
+
+    async function showSafes(chainId) {
+      safeList.innerHTML = '';
+      const safes = config.addedSafes[chainId];
+      if (!safes) return;
+
+      for (const [safeAddress, safe] of Object.entries(safes)) {
+        const safeDiv = document.createElement('div');
+        safeDiv.className = 'safe';
+
+        const safeHeader = document.createElement('h3');
+        safeHeader.innerHTML = `<a href="https://etherscan.io/address/${safeAddress}" target="_blank">${safeAddress}</a> (Threshold: ${safe.threshold})`;
+        safeDiv.appendChild(safeHeader);
+
+        const ownersUl = document.createElement('ul');
+        for (const owner of safe.owners) {
+          const li = document.createElement('li');
+          const ownerName = config.addressBook[chainId]?.[owner.value] || owner.value;
+
+          const balance = await getBalance(chainId, owner.value);
+
+          const balanceSpan = document.createElement('span');
+          balanceSpan.textContent = '****';
+          balanceSpan.style.cursor = 'pointer';
+          balanceSpan.title = 'Click to reveal balance';
+          balanceSpan.onclick = () => { balanceSpan.textContent = balance; };
+
+          li.innerHTML = `<a href="https://etherscan.io/address/${owner.value}" target="_blank">${ownerName}</a> - Balance: `;
+          li.appendChild(balanceSpan);
+
+          ownersUl.appendChild(li);
+        }
+
+        safeDiv.appendChild(ownersUl);
+        safeList.appendChild(safeDiv);
+      }
+    }
+
+    chainSelect.addEventListener('change', e => showSafes(e.target.value));
+    showSafes(chainSelect.value);
+  });
+</script>
+
 </body>
 </html>
