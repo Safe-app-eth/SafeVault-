@@ -1,0 +1,37 @@
+Name,Type,Version
+eslint,npm,^9.0.0
+reown,npm,latest
+@safe-global/safe-apps-react-sdk,npm,^0.10.5
+postcss,npm,^8.4.35
+tailwindcss,npm,^4.0.0
+typescript,npm,^5.4.2
+@safe-global/safe-core-sdk,npm,^7.2.0
+next,npm,^15.0.0
+prettier,npm,^3.2.5
+@safe-global/safe-ethers-adapters,npm,^7.2.0
+appkit,npm,latest
+autoprefixer,npm,^10.4.19
+ethers,npm,^6.8.1
+@safe-global/protocol-kit,npm,^1.6.2
+eslint-config-next,npm,^15.0.0
+react,npm,^19.0.0
+react-dom,npm,^19.0.0
+python-telegram-bot,pypi,>= 22.2
+flask-sqlalchemy,pypi,>= 3.1.1
+werkzeug,pypi,>= 3.1.3
+sqlalchemy,pypi,>= 2.0.41
+requests,pypi,>= 2.32.4
+email-validator,pypi,>= 2.2.0
+gunicorn,pypi,>= 23.0.0
+flask,pypi,>= 3.1.1
+actions/checkout,githubaction,"3.*, 4.*"
+actions/setup-node,githubaction,"3.*, 4.*"
+actions/github-script,githubaction,7.*
+peaceiris/actions-gh-pages,githubaction,4.*
+amondnet/vercel-action,githubaction,25.*
+pnpm/action-setup,githubaction,4.*
+actions/upload-pages-artifact,githubaction,3.*
+actions/configure-pages,githubaction,5.*
+actions/deploy-pages,githubaction,4.*
+actions/cache,githubaction,4.*
+EndBug/add-and-commit,githubaction,9.*

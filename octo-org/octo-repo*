@@ -1,0 +1,15 @@
+# Specific repo and branch
+uses: thegoodeth12/safe-cli@main
+
+# Workflow file from another repo
+uses: thegoodeth12/safe-vault/.github/workflows/deploy.yml@main
+
+# Version-tagged release from a repo (Recommended for stability)
+uses: octo-org/octo-repo@v2
+
+# Allow all actions in an org (Wildcards allowed in specific fields)
+# (Usually in `permissions` or `allowed-actions` sections in `workflow` or org-wide policy)
+octo-org/*
+
+# Allow all workflows/actions within one repo (used in reusable workflows / action policies)
+octo-org/octo-repo/*
