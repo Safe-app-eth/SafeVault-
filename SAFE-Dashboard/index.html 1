@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SafeVault Proposals Dashboard</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header>
+    <h1>🔐 SafeVault Dashboard</h1>
+    <p>Live Safe Proposals Viewer</p>
+  </header>
+
+  <main>
+    <table>
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Description</th>
+          <th>Status</th>
+          <th>Signers</th>
+        </tr>
+      </thead>
+      <tbody id="proposal-table-body">
+        <!-- Injected by JS -->
+      </tbody>
+    </table>
+  </main>
+
+  <footer>
+    <p>Auto-updated from <code>proposals.json</code></p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

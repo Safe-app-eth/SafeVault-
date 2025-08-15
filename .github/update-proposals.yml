@@ -1,0 +1,38 @@
+name: ⏱️ Update Safe Proposals
+
+on:
+  schedule:
+    - cron: "*/15 * * * *"
+  workflow_dispatch:
+
+jobs:
+  update-proposals:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 🧾 Checkout repo
+        uses: actions/checkout@v3
+
+      - name: ⚙️ Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: 📦 Install dependencies
+        run: npm install
+
+      - name: 🔐 Fetch latest proposals (Safe SDK)
+        run: node .github/scripts/fetch-proposals.js
+        env:
+          SAFE_ADDRESS: ${{ secrets.SAFE_ADDRESS }}
+          CHAIN_ID: "1"
+
+      - name: Fetch latest proposals
+        run: curl https://your-backend/api/proposals > docs/proposals.json
+      
+      - name: ✅ Commit & push if changed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add docs/proposals.json
+          git diff --quiet && echo "No changes" || (git commit -m "Update proposals.json [bot]" && git push)

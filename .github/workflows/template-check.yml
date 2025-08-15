@@ -1,0 +1,36 @@
+name: PR Template Check
+permissions:
+  contents: read
+
+on:
+  pull_request:
+    types: [opened, edited, synchronize]
+
+jobs:
+  check-pr-template:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+
+      - name: Check PR template compliance
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const requiredSections = [
+              '### 📦 Summary',
+              '### ✅ What\'s Changed',
+              '### 🔗 Preview Deployment',
+              '### 🧪 Testing Checklist',
+              '### 🔖 Related Issues'
+            ];
+
+            const body = context.payload.pull_request.body || '';
+            const missing = requiredSections.filter(section => !body.includes(section));
+
+            if (missing.length > 0) {
+              core.setFailed(`❌ Missing required sections in PR description:\n${missing.join('\n')}`);
+            } else {
+              console.log("✅ All required PR sections are present.");
+            }

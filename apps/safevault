@@ -1,0 +1,28 @@
+{
+  "version": 2,
+  "rootDirectory": "apps/safevault",
+  "builds": [
+    {
+      "src": "apps/safevault/next.config.js",
+      "use": "@vercel/next"
+    }
+  ],
+  "github": {
+    "enabled": true,
+    "silent": false,
+    "deployments": {
+      "autoAlias": true,
+      "productionBranch": "main",
+      "skip": {
+        "files": [
+          "!apps/safevault/**/*.{js,ts,tsx,json,css,scss,md,html,env}",
+          "!apps/safevault/next.config.js",
+          "!apps/safevault/package.json",
+          "!pnpm-lock.yaml",
+          "!yarn.lock",
+          "!vercel.json"
+        ]
+      }
+    }
+  }
+}

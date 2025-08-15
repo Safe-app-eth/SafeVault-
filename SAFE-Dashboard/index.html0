@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>SafeVault Dashboard</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f7f9fb;
+      color: #333;
+      margin: 0;
+      padding: 2rem;
+    }
+
+    h1 {
+      text-align: center;
+      color: #2c3e50;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 2rem;
+    }
+
+    th, td {
+      padding: 12px 16px;
+      border: 1px solid #ddd;
+      text-align: left;
+    }
+
+    th {
+      background-color: #2c3e50;
+      color: #fff;
+    }
+
+    tr:nth-child(even) {
+      background-color: #f2f2f2;
+    }
+
+    .status {
+      padding: 4px 10px;
+      border-radius: 4px;
+      font-size: 0.9em;
+      font-weight: bold;
+      display: inline-block;
+    }
+
+    .Pending { background-color: #f1c40f; color: #000; }
+    .Success { background-color: #2ecc71; color: #fff; }
+    .Failed  { background-color: #e74c3c; color: #fff; }
+
+    .footer {
+      margin-top: 3rem;
+      font-size: 0.8em;
+      text-align: center;
+      color: #999;
+    }
+  </style>
+</head>
+<body>
+  <h1>🔐 SafeVault Proposals Dashboard</h1>
+  <table>
+    <thead>
+      <tr>
+        <th>Date</th>
+        <th>Description</th>
+        <th>Status</th>
+        <th>Signers</th>
+      </tr>
+    </thead>
+    <tbody id="proposal-table-body">
+      <tr><td colspan="4" style="text-align:center;">Loading...</td></tr>
+    </tbody>
+  </table>
+
+  <div class="footer">Auto-updated via GitHub Actions · SafeVault · © 2025</div>
+
+  <script>
+    fetch("proposals.json")
+      .then(res => res.json())
+      .then(data => {
+        const tbody = document.getElementById("proposal-table-body");
+        tbody.innerHTML = "";
+
+        data.forEach(p => {
+          const tr = document.createElement("tr");
+
+          tr.innerHTML = `
+            <td>${p.date}</td>
+            <td>${p.description}</td>
+            <td><span class="status ${p.status}">${p.status}</span></td>
+            <td>${p.signers.join(', ')}</td>
+          `;
+
+          tbody.appendChild(tr);
+        });
+      })
+      .catch(err => {
+        document.getElementById("proposal-table-body").innerHTML = 
+          `<tr><td colspan="4">⚠️ Failed to load proposals.</td></tr>`;
+        console.error(err);
+      });
+  </script>
+</body>
+</html>

@@ -1,0 +1,14 @@
+# Frontend
+frontend/ @Safe-app-eth/frontend-team
+
+# Backend
+backend/ @Safe-app-eth/backend-team
+
+# Shared infra
+.github/ @Safe-app-eth/ci-infra
+
+# Docs
+docs/ @Safe-app-eth/docs-maintainers
+
+# Everything else
+* @Safe-app-eth/maintainers

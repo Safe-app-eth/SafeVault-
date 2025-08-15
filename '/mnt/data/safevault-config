@@ -1,0 +1,97 @@
+# Create reconfigured package.json
+package_json = {
+    "name": "safevault",
+    "version": "1.0.0",
+    "description": "SafeVault – Secure multisig governance with GitHub Pages dashboard, Safe SDK, AppKit, Vercel automation, and WalletConnect signer integration.",
+    "author": "thegoodeth",
+    "license": "MIT",
+    "homepage": "https://thegoodeth.github.io/safevault",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/thegoodeth/safevault"
+    },
+    "keywords": [
+        "safe-app", "gnosis-safe", "multisig", "governance", "automation", "reown",
+        "dao", "ethers", "appkit", "safe-sdk", "walletconnect", "vercel", "github-pages", "dashboard"
+    ],
+    "scripts": {
+        "dev": "next dev",
+        "build": "next build",
+        "start": "next start",
+        "export": "next export",
+        "lint": "next lint",
+        "format": "prettier --write .",
+        "typecheck": "tsc --noEmit",
+        "analyze": "ANALYZE=true next build"
+    },
+    "dependencies": {
+        "@safe-global/safe-apps-react-sdk": "^0.10.5",
+        "@safe-global/protocol-kit": "^1.6.2",
+        "@safe-global/safe-core-sdk": "^7.2.0",
+        "@safe-global/safe-ethers-adapters": "^7.2.0",
+        "appkit": "latest",
+        "ethers": "^6.8.1",
+        "reown": "latest",
+        "next": "^15.0.0",
+        "react": "^19.0.0",
+        "react-dom": "^19.0.0"
+    },
+    "devDependencies": {
+        "eslint": "^9.0.0",
+        "eslint-config-next": "^15.0.0",
+        "typescript": "^5.4.2",
+        "tailwindcss": "^4.0.0",
+        "postcss": "^8.4.35",
+        "autoprefixer": "^10.4.19",
+        "prettier": "^3.2.5"
+    },
+    "engines": {
+        "node": ">=18.0.0",
+        "npm": ">=9.0.0"
+    }
+}
+
+# Write files
+import json
+(base_dir / "package.json").write_text(json.dumps(package_json, indent=2))
+
+# next.config.js for export + GitHub Pages
+next_config = """
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  output: 'export',
+  trailingSlash: true,
+  images: { unoptimized: true },
+  assetPrefix: process.env.NODE_ENV === 'production' ? './' : ''
+};
+module.exports = nextConfig;
+"""
+(base_dir / "next.config.js").write_text(next_config.strip())
+
+# vercel.json for clean deployment
+vercel_json = {
+    "version": 2,
+    "builds": [{ "src": "next.config.js", "use": "@vercel/next" }],
+    "routes": [{ "src": "/(.*)", "dest": "/" }]
+}
+(base_dir / "vercel.json").write_text(json.dumps(vercel_json, indent=2))
+
+# tsconfig.json for type-checking
+tsconfig_json = {
+    "compilerOptions": {
+        "target": "ES2020",
+        "module": "ESNext",
+        "lib": ["DOM", "DOM.Iterable", "ES2020"],
+        "allowJs": True,
+        "skipLibCheck": True,
+        "esModuleInterop": True,
+        "moduleResolution": "Node",
+        "resolveJsonModule": True,
+        "isolatedModules": True,
+        "jsx": "preserve",
+        "noEmit": True,
+        "incremental": True
+    },
+    "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
+    "exclude": ["node_modules"]
+}

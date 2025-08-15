@@ -1,0 +1,9 @@
+{
+  "compilerOptions": {
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "strict": true,
+    ...
+  },
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "declaration.d.ts"]
+}

@@ -1,21 +1,7 @@
 {
-  "name": "Gnosis SafeVault",
-  "short_name": "SafeVault",
-  "start_url": "/",
-  "display": "standalone",
-  "background_color": "#ffffff",
-  "theme_color": "#000000",
-  "description": "Custom Safe{Wallet} Dashboard for secure multisig ops",
-  "icons": [
-    {
-      "src": "/icons/icon-192x192.png",
-      "sizes": "192x192",
-      "type": "image/png"
-    },
-    {
-      "src": "/icons/icon-512x512.png",
-      "sizes": "512x512",
-      "type": "image/png"
-    }
-  ]
+  "name": "SafeVault Multisig Dashboard",
+  "description": "View and manage Safe proposals, signatures, and statuses in real time.",
+  "iconPath": "/logo.svg",
+  "chainIds": [1, 42161, 137],  // Ethereum, Arbitrum, Polygon
+  "url": "https://safe-vault-f44t.vercel.app"
 }

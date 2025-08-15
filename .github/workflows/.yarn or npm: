@@ -1,0 +1,4 @@
+safevault/
+    ├─ .github/
+    │   └─ workflows/
+    │       └─ deploy-vercel.yml   ✅ ← Create this!
