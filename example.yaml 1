@@ -1,0 +1,15 @@
+filters:
+  - network: 1 
+    value:
+      eq: 120
+    gas:
+      gt: 100
+      lt: 150
+    gasLimit:
+      lt: 200
+    fee:
+      gte: 140
+    gasPrice:
+      lte: 120
+    nonce:
+      gt: 20

@@ -1,129 +1,92 @@
-# 🔐 SafeVault GitHub Dashboard
+# SafeVault – Safe{Wallet} Governance & Automation Dashboard
 
-**Live Dashboard:**  
-🌐 [safe-vault-f44t.vercel.app](https://safe-vault-f44t.vercel.app) — real-time governance updates  
-🗂️ [safe-app-eth.github.io/safevault-](https://safe-app-eth.github.io/safevault-/) — static GitHub archive
+SafeVault is a secure dashboard for managing Safe{Wallet}, proposals, and signer-aware transactions across multiple EVM chains. It integrates WalletConnect, Reown.AppKit, and Safe SDK for full automation.
 
 ---
 
-## ✅ Overview
+## 🔐 WalletConnect Integration
 
-This is the **official SafeVault multisig activity dashboard**, backed by GitHub Actions and updated every 15 minutes.
+Enable users to interact directly with your Safe via browser or mobile wallets:
 
-It provides a tamper-proof, automated snapshot of proposal activity across your Safe(s):
+- 🔐 Connect any EVM-compatible wallet (MetaMask, Trust, etc.)
+- 📜 Allow signing of messages or proposals
+- 💡 Use with Safe AppKit or Reown.AppKit for signer-aware interfaces
 
-- 📅 **Date** — timestamp of each proposal
-- 📝 **Description** — decoded or raw transaction intent
-- 🔁 **Status** — pending, executed, or failed
-- 🧾 **Signers** — all participant addresses and approval state
-
-The dashboard is powered by:
-- [`docs/proposals.json`](./docs/proposals.json) — raw data
-- [`index.html`](./docs/index.html) — static frontend
-- [`update-proposals.yml`](.github/workflows/update-proposals.yml) — auto-syncing GitHub Action
+[WalletConnect](https://walletconnect.com/) provides a minimal, secure, and flexible connection.
 
 ---
 
-## 🚀 Deployment Architecture
+## ⛓️ Ethereum & Multi-chain Support
 
-┌────────────────────┐
-│  SafeVault Backend │ ◄──── Hosted @ Vercel (dynamic proposals API)
-└─────────┬──────────┘
-│
-Every 15 mins
-▼
-┌────────────────────────────┐
-│  GitHub Action Scheduler   │
-│  update-proposals.yml      │
-│  Fetches proposals.json    │
-└─────────┬──────────────────┘
-│
-▼
-┌──────────────────────────┐
-│   /docs/proposals.json   │
-│   + /index.html UI       │
-│   + .nojekyll            │
-└─────────┬────────────────┘
-▼
-🌍 GitHub Pages — public, verified archive
----
+SafeVault is built with cross-chain compatibility in mind. Extend the dashboard or backend to support:
 
-## 🔁 Live Automation
+- 🌉 Ethereum Mainnet
+- 🌀 Arbitrum, Optimism
+- 💎 Polygon, Base, Gnosis Chain, and more
 
-The GitHub Action runs every **15 minutes** and:
-
-1. Pulls proposal data from your Vercel-hosted API:
-
-2. https://safe-vault-f44t.vercel.app/api/proposals
-
-3. 2. Overwrites the existing `docs/proposals.json` with fresh data
-
-3. Commits and pushes updates back to `main`
-
-You can also trigger it manually from GitHub → **Actions → "Update Safe Proposals" → Run Workflow**.
+> Use Safe{Core} SDK with chain-specific RPCs or Alchemy/Infura to stay synced across networks. Include chain ID and Safe address in your `proposals.json` schema for multi-chain dashboards.
 
 ---
 
-## 🧠 How to Set Up (One-Time)
+## 🧪 Example: GitHub Action with Safe SDK
 
-### 1. Dashboard Files
+You can use the Safe SDK inside a GitHub Action to fetch proposals:
 
-Inside the `docs/` folder:
+```ts
+import { getProposalsForSafe } from './safe-utils'
+import fs from 'fs'
 
-- `index.html` — simple interactive dashboard
-- `proposals.json` — live proposal data (auto-managed)
-- `.nojekyll` — disables GitHub Jekyll processing
+const safeAddress = process.env.SAFE_ADDRESS
+const chainId = process.env.CHAIN_ID || 1
 
-### 2. Enable GitHub Pages
+const proposals = await getProposalsForSafe(safeAddress, chainId)
+fs.writeFileSync('docs/proposals.json', JSON.stringify(proposals, null, 2))
+```
 
-In your GitHub repo:
+With this setup, you have:
 
-- Go to **Settings → Pages**
-- Set:
-- **Branch**: `main`
-- **Folder**: `/docs`
-- ✅ Save
+- 🧬 Vercel for live + preview deployment
+- 🔄 GitHub Actions for automated syncing
+- 🔐 WalletConnect for signer awareness
+- ⚡ Safe SDK and AppKit for on-chain data
 
-Your dashboard will be publicly accessible at:  
-📁 `https://safe-app-eth.github.io/safevault-/`
+---
 
-### 3. GitHub Action
+## ⚡ Quick Start
 
-Create the following file at `.github/workflows/update-proposals.yml`:
+1. Clone the repository
+2. Install dependencies:
 
-```yaml
-name: 🔄 Update Safe Proposals
+```bash
+pnpm install
+# or npm install
+```
 
-on:
-schedule:
- - cron: '*/15 * * * *'
-workflow_dispatch:
+3. Run development server:
 
-jobs:
-update:
- runs-on: ubuntu-latest
- steps:
-   - name: Checkout code
-     uses: actions/checkout@v3
+```bash
+pnpm dev
+```
 
-   - name: Fetch latest proposals
-     run: |
-       curl -s https://safe-vault-f44t.vercel.app/api/proposals -o docs/proposals.json
+4. Build and export for Vercel deployment:
 
-   - name: Commit and push
-     run: |
-       git config user.name "github-actions[bot]"
-       git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-       git add docs/proposals.json
-       git commit -m "🔄 Update proposals.json from live backend" || echo "No changes to commit"
-       git push
-🛠 Maintained By
+```bash
+pnpm build
+pnpm export
+```
 
-SafeVault is a modular, secure automation layer built on Safe{Wallet}.
-This dashboard is maintained by the SafeVault Governance Core.
-Every proposal signed, skipped, or executed is tracked publicly here.
+---
 
-🔗 Launch SafeVault Dashboard
-🔗 View on GitHub Pages
+## 🌐 Live Links
 
-© 2025 SafeVault · All rights reserved.
+- 🖥️ [SafeVault Dashboard](https://safe-vault-f44t.vercel.app)
+- 🔑 [Open in Safe App](https://safe.global/app/)
+- 💻 [GitHub Repository](https://github.com/thegoodeth/SafeVault)
+
+---
+
+## 📝 Notes
+
+- Keep your `.env` variables updated for Safe addresses, chain IDs, WalletConnect, and Reown API keys
+- `docs/proposals.json` is automatically updated via GitHub Action
+- TailwindCSS + Chakra UI are included for flexible styling

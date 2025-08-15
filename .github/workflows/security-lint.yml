@@ -1,0 +1,28 @@
+name: 🛡️ GitHub Actions Security Linte
+{
+  }
+name: Check for permissions block
+        run: bash .github/scripts/check-permissions.sh
+on:
+  pull_request:
+    paths:
+      - ".github/workflows/*.yml"
+  push:
+    paths:
+      - ".github/workflows/*.yml"
+
+jobs:
+  lint-actions:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+
+      - name: Install actionlint
+        run: |
+          curl -sSLO https://github.com/rhysd/actionlint/releases/latest/download/actionlint_linux_amd64.tar.gz
+          tar -xzf actionlint_linux_amd64.tar.gz
+          sudo mv actionlint /usr/local/bin/actionlint
+
+      - name: Run actionlint on all workflows
+        run: actionlint

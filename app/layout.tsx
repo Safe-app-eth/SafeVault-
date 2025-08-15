@@ -1,19 +1,15 @@
 import './globals.css'
-import { SafeProvider } from '@safe-global/safe-apps-provider'
+import { ReactNode } from 'react'
 
 export const metadata = {
-  title: 'SafeVault 🔐',
-  description: 'Your secure Gnosis Safe dashboard',
+  title: 'SafeVault Dashboard',
+  description: 'Manage your Safe wallets securely',
 }
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en">
-      <body>
-        <SafeProvider>
-          {children}
-        </SafeProvider>
-      </body>
+      <body>{children}</body>
     </html>
   )
 }
