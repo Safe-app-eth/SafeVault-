@@ -1,6 +1,16 @@
 {
-  "name": "SafeVault",
-  "description": "Manage your multisig automation and proposals via SafeVault",
-  "iconPath": "/logo.svg",
-  "safeAppsSDKVersion": "1.4.0"
+  "addressBook": {
+    "0xFDf84a0e7D07bC56f7De56696fc409704cC83a24": {
+      "name": "SafeVault Primary",
+      "chainId": "1"
+    }
+  },
+  "addedSafes": {
+    "0xFDf84a0e7D07bC56f7De56696fc409704cC83a24": {
+      "owners": [
+        "0xFDf84a0e7D07bC56f7De56696fc409704cC83a24"
+      ],
+      "threshold": 1
+    }
+  }
 }
