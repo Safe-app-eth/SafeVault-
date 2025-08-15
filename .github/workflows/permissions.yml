@@ -1,29 +1,24 @@
-name: Configure Permissions for Workflows
+name: Permissions Configuration
 
 on:
-  workflow_call: # Allows this configuration to be reusable in other workflows
-    inputs:
-      allow_org_repos:
-        description: "Grant access to all repositories in octo-org"
-        required: false
-        default: false
+  repository_dispatch:
 
 permissions:
-  contents: read # Grants workflows read-only access to the repository's content
-  actions: read  # Grants workflows read-only access to GitHub Actions
+  contents: read
+  actions: read
 
 jobs:
-  configure-permissions:
+  setup-permissions:
     runs-on: ubuntu-latest
-    steps:
-      - name: Setup Permissions for SafeVault
-        run: echo "Configuring permissions for the repository"
 
-      - name: Allow SafeVault Actions
-        if: always() # Ensure these specific workflows are allowed
+    steps:
+      - name: Configure Permissions
+        run: echo "Permissions configured for SafeVault"
+
+      - name: Allow Access to Repositories
         run: |
           echo "Granting access to thegoodeth12/safe-cli@main"
           echo "Granting access to thegoodeth12/safe-vault/.github/workflows/deploy.yml@main"
           echo "Granting access to octo-org/octo-repo@v2"
-          echo "Granting access to all repos in octo-org/*"
+          echo "Granting access to octo-org/*"
           echo "Granting access to octo-org/octo-repo/*"
