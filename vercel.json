@@ -1,16 +1,10 @@
 {
   "version": 2,
-  "name": "safevault",
+  "name": "safevault-dashboard",
   "builds": [
     {
       "src": "next.config.js",
       "use": "@vercel/next"
-    }
-  ],
-  "rewrites": [
-    {
-      "source": "/manifest.json",
-      "destination": "/public/manifest.json"
     }
   ],
   "env": {
@@ -18,12 +12,33 @@
     "NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID": "@8a81e704ed22e53debea9db88f91bfcb",
     "NEXT_PUBLIC_REOWN_API": "@0e86b980-2298-4978-8dd5-0b9e7af95016",
     "NEXT_PUBLIC_SAFE_CHAIN_ID": "1",
-    "NEXT_PUBLIC_GITHUB_REPO": "thegoodeth/safevault"
+    "NEXT_PUBLIC_GITHUB_REPO": "thegoodeth/SafeVault"
   },
+  "rewrites": [
+    {
+      "source": "/manifest.json",
+      "destination": "/public/manifest.json"
+    }
+  ],
+  "redirects": [],
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "X-Frame-Options",
+          "value": "ALLOWALL"
+        }
+      ]
+    }
+  ],
   "routes": [
     {
       "src": "/(.*)",
       "dest": "/$1"
     }
-  ]
+  ],
+  "outputDirectory": "docs",
+  "cleanUrls": true,
+  "description": "Static Safe{Wallet} proposal viewer with signer status, GitHub automation, multi-chain support, and live previews via Vercel."
 }
