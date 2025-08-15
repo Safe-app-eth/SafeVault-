@@ -1,10 +1,53 @@
 {
-  "name": "SafeVault 🔐",
-  "description": "Your secure Safe-native dashboard for signing, proposing, and managing multisig operations.",
-  "iconPath": "icon.svg",
-  "tags": ["finance", "signing", "dashboard"],
-  "developer": {
-    "name": "Safe-app-eth",
-    "url": "https://github.com/Safe-app-eth"
+  "addressBook": {
+    "1": {
+      "0xA9D1e08C7793af67e9d92fe308d5697FB81d3E43": "Wallet 1",
+      "0x8ba1f109551bd432803012645ac136ddd64dba72": "Wallet 2",
+      "0x89EdE5cBE53473A64d6C8DF14176a0d658dAAeDC": "Wallet 3",
+      "0x8F217D5cCCd08fD9dCe24D6d42AbA2BB4fF4785B": "Wallet 4",
+      "0x4e2f98c96e2d595a83AFa35888C4af58Ac343E44": "Wallet 5",
+      "0x5f350bf5fee8e254d6077f8661e9c7b83a30364e": "Wallet 6",
+      "0xfecBad5D60725EB6fd10f8936e02fa203fd27E4b": "Wallet 7",
+      "0x10A19e7eE7d7F8a52822f6817de8ea18204F2e4f": "Wallet 8",
+      "0x1234567890abcdef1234567890abcdef12345678": "Wallet 9",
+      "0xafd5f60aa8eb4f488eaa0ef98c1c5b0645d9a0a0": "Wallet 10"
+    }
+  },
+  "addedSafes": {
+    "1": {
+      "0xA9D1e08C7793af67e9d92fe308d5697FB81d3E43": {
+        "owners": [
+          { "value": "0x5f350bf5fee8e254d6077f8661e9c7b83a30364e", "name": null },
+          { "value": "0xafd5f60aa8eb4f488eaa0ef98c1c5b0645d9a0a0", "name": "Smart-Safe-Contract" },
+          { "value": "0xFDf84a0e7D07bC56f7De56696fc409704cC83a24", "name": "Signer (your address ending 24)" }
+        ],
+        "threshold": 2
+      },
+      "0x8ba1f109551bd432803012645ac136ddd64dba72": {
+        "owners": [
+          { "value": "0xA9D1e08C7793af67e9d92fe308d5697FB81d3E43", "name": null },
+          { "value": "0x10A19e7eE7d7F8a52822f6817de8ea18204F2e4f", "name": null }
+        ],
+        "threshold": 1
+      },
+      "0x89EdE5cBE53473A64d6C8DF14176a0d658dAAeDC": {
+        "owners": [
+          { "value": "0x4e2f98c96e2d595a83AFa35888C4af58Ac343E44", "name": null },
+          { "value": "0xfecBad5D60725EB6fd10f8936e02fa203fd27E4b", "name": null }
+        ],
+        "threshold": 1
+      },
+      "0x8F217D5cCCd08fD9dCe24D6d42AbA2BB4fF4785B": {
+        "owners": [
+          { "value": "0x1234567890abcdef1234567890abcdef12345678", "name": null },
+          { "value": "0x8ba1f109551bd432803012645ac136ddd64dba72", "name": null }
+        ],
+        "threshold": 1
+      }
+    }
+  },
+  "settings": {
+    "showHiddenBalances": false,
+    "signerAddress": "0xFDf84a0e7D07bC56f7De56696fc409704cC83a24"
   }
 }

@@ -1,0 +1,5 @@
+// Connect via WalletConnect
+await Reown.AppKit.Unity.Connector.TryResumeSessionAsync();
+
+// Sign transaction
+await Reown.Sign.Engine.Extend("safe-tx-hash-here");
