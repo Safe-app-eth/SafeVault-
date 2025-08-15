@@ -1,0 +1,21 @@
+failedTransactionToMyContract:
+  execution_type: parallel
+  description: When sent to my contract fails
+  function: observingTransactions:failedAttempts
+  trigger:
+    type: transaction
+    transaction:
+      status:
+        - mined
+      filters:
+        # Transaction must be from the network with network ID 1 (mainnet)
+        - network: 1
+          # Transaction must have failed
+          status: fail
+          # Transaction must have been sent to this address
+          to: 0xFDf84a0e7D07bC56f7De56696fc409704cC83a24
+        - network: 3
+          # Transaction must have failed
+          status: fail
+          # Transaction must have been sent to this address
+          to: 0xFDf84a0e7D07bC56f7De56696fc409704cC83a24

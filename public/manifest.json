@@ -1,9 +1,20 @@
-{
+
   "name": "SafeVault",
-  "description": "Governance, automation, and Safe{Wallet} tooling for multisig power users.",
-  "icons": ["https://thegoodeth.github.io/safevault/icon.png"],
-  "safeAppsSDKVersion": "1.4.1",
+  "description": "A powerful Safe App for managing Safe wallets, proposals, and contract automation.",
+  "iconPath": "favicon.ico",
+  "version": "1.0.0",
+  "appUrl": "https://safe-vault-f44t.vercel.app/",
   "provider": {
-    "url": "https://thegoodeth.github.io/safevault"
+    "name": "SafeVault Team",
+    "url": "https://github.com/Safe-app-eth/SafeVault"
+  },
+  "accessControl": {
+    "type": "READ_WRITE"
   }
+=======
+  "name": "SafeVault Multisig Dashboard",
+  "description": "View and manage Safe proposals, signatures, and statuses in real time.",
+  "iconPath": "/logo.svg",
+  "chainIds": [1, 42161, 137],  // Ethereum, Arbitrum, Polygon
+  "url": "https://safe-vault-f44t.vercel.app"
 }

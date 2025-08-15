@@ -1,0 +1,82 @@
+<script src="https://cdn.jsdelivr.net/npm/ethers@6/dist/ethers.umd.min.js"></script>
+<script>
+fetch('config/config.json')
+  .then(res => res.json())
+  .then(async config => {
+    const chainSelect = document.getElementById('chainSelect');
+    const safeList = document.getElementById('safeList');
+
+    // Add chain options
+    Object.keys(config.addedSafes).forEach(chainId => {
+      const option = document.createElement('option');
+      option.value = chainId;
+      option.textContent = `Chain ${chainId}`;
+      chainSelect.appendChild(option);
+    });
+
+    async function getBalance(chainId, address) {
+      const rpcMap = {
+        '1': 'https://mainnet.infura.io/v3/d287bc172bba4c66a78315df41afa70c',
+        '10': 'https://optimism-mainnet.infura.io/v3/d287bc172bba4c66a78315df41afa70c',
+        '56': 'https://bsc-dataseed.binance.org/',
+        '137': 'https://polygon-rpc.com/',
+        '42161': 'https://arb1.arbitrum.io/rpc'
+        // Add other chains as needed
+      };
+
+      try {
+        const provider = new ethers.JsonRpcProvider(rpcMap[chainId]);
+        const balance = await provider.getBalance(address);
+        return ethers.formatEther(balance) + ' ETH';
+      } catch (err) {
+        return 'N/A';
+      }
+    }
+
+    async function showSafes(chainId) {
+      safeList.innerHTML = '';
+      const safes = config.addedSafes[chainId];
+      if (!safes) return;
+
+      for (const [safeAddress, safe] of Object.entries(safes)) {
+        const safeDiv = document.createElement('div');
+        safeDiv.className = 'safe';
+
+        const safeHeader = document.createElement('h3');
+        safeHeader.innerHTML = `<a href="https://etherscan.io/address/${safeAddress}" target="_blank">${safeAddress}</a> (Threshold: ${safe.threshold})`;
+        safeDiv.appendChild(safeHeader);
+
+        const ownersUl = document.createElement('ul');
+        for (const owner of safe.owners) {
+          const li = document.createElement('li');
+          const ownerName = config.addressBook[chainId]?.[owner.value] || owner.value;
+
+          // Fetch real balance
+          const balance = await getBalance(chainId, owner.value);
+
+          // Hidden balance span
+          const balanceSpan = document.createElement('span');
+          balanceSpan.textContent = '****';
+          balanceSpan.style.cursor = 'pointer';
+          balanceSpan.title = 'Click to reveal balance';
+          balanceSpan.onclick = () => {
+            balanceSpan.textContent = balance;
+          };
+
+          li.innerHTML = `<a href="https://etherscan.io/address/${owner.value}" target="_blank">${ownerName}</a> - Balance: `;
+          li.appendChild(balanceSpan);
+
+          ownersUl.appendChild(li);
+        }
+
+        safeDiv.appendChild(ownersUl);
+        safeList.appendChild(safeDiv);
+      }
+    }
+
+    chainSelect.addEventListener('change', e => showSafes(e.target.value));
+
+    // Initialize with first chain
+    showSafes(chainSelect.value);
+  });
+</script>
