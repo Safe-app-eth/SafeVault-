@@ -1,7 +1,3 @@
-# 🔐 SafeVault GitHub Dashboard UI
-
-## ✅ What This Is
-
 'use client'
 import React, { useEffect, useState } from 'react'
 import SafeAppsSDK from '@safe-global/safe-apps-sdk'
