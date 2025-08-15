@@ -1,0 +1,46 @@
+{
+  "name": "safevault-app",
+  "version": "1.0.0",
+  "private": true,
+  "description": "SafeVault – Governance & Automation for Safe{Wallet} using Safe SDK, Reown, and GitHub-native integrations.",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "export": "next export",
+    "lint": "next lint",
+    "type-check": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@safe-global/protocol-kit": "^1.4.2",
+    "@safe-global/safe-apps-react-sdk": "^0.13.0",
+    "@safe-global/safe-apps-provider": "^0.13.0",
+    "@safe-global/safe-apps-sdk": "^7.6.0",
+    "@reown/sdk": "^1.1.2",
+    "ethers": "^6.8.1",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "next": "13.5.6",
+    "typescript": "^5.4.3"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.4",
+    "@types/react": "^18.2.45",
+    "@types/react-dom": "^18.2.18",
+    "eslint": "^8.57.0",
+    "eslint-config-next": "^14.2.3",
+    "prettier": "^3.2.5",
+    "tailwindcss": "^3.4.1",
+    "postcss": "^8.4.32",
+    "autoprefixer": "^10.4.17",
+    "typescript": "^5.4.3"
+  },
+  "engines": {
+    "node": ">=18.16.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/thegoodeth/SafeVault"
+  },
+  "license": "MIT"
+}
