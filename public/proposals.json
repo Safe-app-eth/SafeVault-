@@ -1,17 +1,7 @@
-[
-  {
-    "wallet": "0xFDf84a0e7D07bC56f7De56696fc409704cC83a24",
-    "proposal": "Transfer 2 ETH to 0x1234...abcd",
-    "status": "Pending"
-  },
-  {
-    "wallet": "0xAbCdEf1234567890aBCdEf1234567890aBCdEf12",
-    "proposal": "Add new owner 0x9876...ef90",
-    "status": "Approved"
-  },
-  {
-    "wallet": "0xC0FFEE254729296a45a3885639AC7E10F9d54979",
-    "proposal": "Swap USDC to ETH",
-    "status": "Rejected"
-  }
-]
+{
+  "safes": [
+    { "name": "Main Safe", "address": "0xFDf84a0e7D07bC56f7De56696fc409704cC83a24" },
+    { "name": "Treasury", "address": "0x1234567890abcdef1234567890abcdef12345678" },
+    { "name": "Operations", "address": "0xabcdefabcdefabcdefabcdefabcdefabcdefabcd" }
+  ]
+}
