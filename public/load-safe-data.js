@@ -109,4 +109,49 @@ function render() {
   }
 
   // build HTML
-  el.list.inner
+  el.list.innerHTML = '';
+  for (const s of sections) {
+    const ownersHtml = (s.ownersArr && s.ownersArr.length)
+      ? s.ownersArr.map(o => {
+          const addr = (typeof o === 'string') ? o : (o.value || '');
+          const name = (typeof o === 'string') ? null : (o.name || null);
+          const isSigner = addr && addr.toLowerCase() === SIGNER_ADDRESS;
+          const display = name ? `${name} (${addr})` : addr;
+          return `<span class="owner ${isSigner ? 'signer' : ''}" title="${addr}">${isSigner ? '✅ ' : ''}${escapeHtml(display)}</span>`;
+        }).join('')
+      : '<span style="color:#888">No owners data</span>';
+
+    // fake balances if showBalances true (placeholder) — your app should replace with real RPC calls if needed
+    const balanceHtml = showBalances
+      ? `<div class="balances">${randomBalanceHtml(s.safeAddr)}</div>`
+      : `<div class="balances balance-hidden">Hidden</div>`;
+
+    const safeItem = document.createElement('div');
+    safeItem.className = 'safe-item';
+    safeItem.innerHTML = `
+      <div class="safe-left">
+        <div class="safe-header"><a class="addr-link" href="#" target="_blank">${escapeHtml(s.displayName)}</a><div style="font-size:0.82rem;color:#666">(${escapeHtml(s.safeAddr)}) — Chain ${escapeHtml(s.chainId)}</div></div>
+        <div class="owners"><strong>Owners:</strong> ${ownersHtml}</div>
+        <div class="threshold"><strong>Threshold:</strong> ${escapeHtml(String(s.threshold))}</div>
+      </div>
+      ${balanceHtml}
+    `;
+    el.list.appendChild(safeItem);
+  }
+}
+
+function randomBalanceHtml(addr){
+  // deterministic-ish pseudo-random so it doesn't change on every render during session
+  let h = 0;
+  for (let i=0;i<addr.length;i++) h = (h << 5) - h + addr.charCodeAt(i);
+  const val = Math.abs(h % 1000) / 10;
+  return `${val.toFixed(3)} ETH`;
+}
+
+function escapeHtml(s){
+  if (!s) return '';
+  return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
+// initial load
+loadData();
