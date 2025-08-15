@@ -3,8 +3,9 @@
   "name": "safevault-dashboard",
   "builds": [
     {
-      "src": "next.config.js",
-      "use": "@vercel/next"
+      "src": "package.json",
+      "use": "@vercel/static-build",
+      "config": { "distDir": "dist" }
     }
   ],
   "env": {
@@ -15,30 +16,35 @@
     "NEXT_PUBLIC_GITHUB_REPO": "thegoodeth/SafeVault"
   },
   "rewrites": [
-    {
-      "source": "/manifest.json",
-      "destination": "/public/manifest.json"
-    }
+    { "source": "/manifest.json", "destination": "/public/manifest.json" },
+    { "source": "/(.*)", "destination": "/index.html" }
   ],
   "redirects": [],
   "headers": [
     {
       "source": "/(.*)",
       "headers": [
-        {
-          "key": "X-Frame-Options",
-          "value": "ALLOWALL"
-        }
+        { "key": "X-Frame-Options", "value": "ALLOWALL" }
+      ]
+    },
+    {
+      "source": "/(.*).(js|css)",
+      "headers": [
+        { "key": "Cache-Control", "value": "max-age=31536000" }
+      ]
+    },
+    {
+      "source": "/(.*).html",
+      "headers": [
+        { "key": "Cache-Control", "value": "no-cache" }
       ]
     }
   ],
   "routes": [
-    {
-      "src": "/(.*)",
-      "dest": "/$1"
-    }
+    { "src": "/(.*)", "dest": "/$1" }
   ],
   "outputDirectory": "docs",
   "cleanUrls": true,
+  "trailingSlash": false,
   "description": "Static Safe{Wallet} proposal viewer with signer status, GitHub automation, multi-chain support, and live previews via Vercel."
 }
