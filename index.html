@@ -1,4 +1,3 @@
-<script src="safeData.js"></script>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -28,50 +27,56 @@
 </main>
 
 <script>
-// Load configuration
+// Real configuration with your provided wallets
 const config = {
-  "addressBook": {
+  addressBook: {
     "1": {
-      "0xFDf84a0e7D07bC56f7De56696fc409704cC83a24": "Meet safe",
-      "0x9a8FEe232DCF73060Af348a1B62Cdb0a19852d13": "Smart-Safe-Contract 1.4.1"
+      "0xA9D1e08C7793af67e9d92fe308d5697FB81d3E43": "Wallet 1",
+      "0x8ba1f109551bd432803012645ac136ddd64dba72": "Wallet 2",
+      "0x89EdE5cBE53473A64d6C8DF14176a0d658dAAeDC": "Wallet 3",
+      "0x8F217D5cCCd08fD9dCe24D6d42AbA2BB4fF4785B": "Wallet 4",
+      "0x4e2f98c96e2d595a83AFa35888C4af58Ac343E44": "Wallet 5",
+      "0x5f350bf5fee8e254d6077f8661e9c7b83a30364e": "Wallet 6",
+      "0xfecBad5D60725EB6fd10f8936e02fa203fd27E4b": "Wallet 7",
+      "0x10A19e7eE7d7F8a52822f6817de8ea18204F2e4f": "Wallet 8",
+      "0x1234567890abcdef1234567890abcdef12345678": "Wallet 9",
+      "0xafd5f60aa8eb4f488eaa0ef98c1c5b0645d9a0a0": "Wallet 10"
     }
   },
-  "addedSafes": {
+  addedSafes: {
     "1": {
-      "0x9a8FEe232DCF73060Af348a1B62Cdb0a19852d13": {
-        "owners": [
-          {"value": "0x5f350bF5feE8e254D6077f8661E9C7B83a30364e", "name": null},
-          {"value": "0xAfD5f60aA8eb4F488eAA0eF98c1C5B0645D9A0A0", "name": "Smart-Safe-Contract 1.4.1"},
-          {"value": "0xFDf84a0e7D07bC56f7De56696fc409704cC83a24", "name": null}
+      "0xA9D1e08C7793af67e9d92fe308d5697FB81d3E43": {
+        owners: [
+          { value: "0x8ba1f109551bd432803012645ac136ddd64dba72", name: "Wallet 2" },
+          { value: "0x89EdE5cBE53473A64d6C8DF14176a0d658dAAeDC", name: "Wallet 3" }
         ],
-        "threshold": 2
+        threshold: 2
       }
     }
   },
-  "settings": {
-    "showHiddenBalances": true
+  settings: {
+    showHiddenBalances: true
   }
 };
 
 let showHidden = config.settings.showHiddenBalances;
 
-// Render dashboard
 function renderDashboard() {
   const dashboard = document.getElementById('dashboard');
   dashboard.innerHTML = '';
-  
+
   for (const chainId in config.addedSafes) {
     const safes = config.addedSafes[chainId];
     for (const safeAddr in safes) {
       const safe = safes[safeAddr];
       const ownersHTML = safe.owners.map(o => `<div>${o.name || o.value}</div>`).join('');
-      const balancesHTML = showHidden ? `<div class="balances">Hidden Balance: ${Math.floor(Math.random()*100)} ETH</div>` : '';
-      
+      const balancesHTML = showHidden ? `<div class="balances">Hidden Balance: ${Math.floor(Math.random() * 100)} ETH</div>` : '';
+
       const card = document.createElement('div');
       card.className = 'safe-card';
       card.innerHTML = `
         <div class="safe-header">Safe: <a href="#" target="_blank">${safeAddr}</a> (Chain ${chainId})</div>
-        <div class="owners"><strong>Owners:</strong>${ownersHTML}</div>
+        <div class="owners"><strong>Owners:</strong> ${ownersHTML}</div>
         ${balancesHTML}
         <div class="threshold">Threshold: ${safe.threshold}</div>
       `;
@@ -80,15 +85,12 @@ function renderDashboard() {
   }
 }
 
-// Toggle hidden balances
 document.getElementById('toggleHidden').addEventListener('click', () => {
   showHidden = !showHidden;
   renderDashboard();
 });
 
-// Initial render
 renderDashboard();
 </script>
 </body>
 </html>
-<script src="safeData.js"></script>
