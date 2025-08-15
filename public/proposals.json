@@ -1,0 +1,7 @@
+{
+  "safes": [
+    { "name": "Main Safe", "address": "0xFDf84a0e7D07bC56f7De56696fc409704cC83a24" },
+    { "name": "Treasury", "address": "0x1234567890abcdef1234567890abcdef12345678" },
+    { "name": "Operations", "address": "0xabcdefabcdefabcdefabcdefabcdefabcdefabcd" }
+  ]
+}

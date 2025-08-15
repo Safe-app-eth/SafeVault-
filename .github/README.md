@@ -168,4 +168,3 @@ With this setup, you have:
 - ⚡ Safe SDK and AppKit for on-chain data
 
 ---
-
