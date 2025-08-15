@@ -1,31 +1,26 @@
-async function loadSafeData() {
-  const listEl = document.getElementById('safe-list');
-  const errorEl = document.getElementById('error-message');
+// /public/load-safe-data.js
+fetch('./safe-data.json')
+  .then(res => {
+    if (!res.ok) throw new Error(`HTTP error ${res.status}`);
+    return res.json();
+  })
+  .then(data => {
+    console.log("Safe Data Loaded:", data);
+    // Call a function to display this on your dashboard
+    displaySafeList(data);
+  })
+  .catch(err => {
+    console.error("Failed to load safe-data.json", err);
+    document.getElementById('safe-list').innerHTML = "<p>Failed to load data.</p>";
+  });
 
-  try {
-    const response = await fetch('./safe-data.json');
-    if (!response.ok) throw new Error(`HTTP ${response.status}`);
-
-    const data = await response.json();
-
-    // Render safes
-    listEl.innerHTML = '';
-    data.addedSafes.forEach(safe => {
-      const div = document.createElement('div');
-      div.className = 'safe-item';
-      div.innerHTML = `
-        <strong>${safe.name}</strong> <br/>
-        Address: ${safe.address} <br/>
-        Network: ${safe.network}
-      `;
-      listEl.appendChild(div);
-    });
-
-  } catch (err) {
-    console.error('Error loading Safe data:', err);
-    errorEl.textContent = 'Failed to load Safe data. Please try again later.';
-    listEl.textContent = '';
-  }
+function displaySafeList(safes) {
+  const container = document.getElementById('safe-list');
+  container.innerHTML = safes.map(safe => `
+    <div>
+      <strong>${safe.name}</strong><br>
+      Address: ${safe.address}<br>
+      Network: ${safe.network}
+    </div>
+  `).join('<hr>');
 }
-
-loadSafeData();
