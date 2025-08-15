@@ -1,22 +1,31 @@
-fetch('safe-data.json')
-  .then(response => response.json())
-  .then(data => {
-    const tableBody = document.getElementById('safeTableBody');
-    const addressBook = data.addressBook;
-    const addedSafes = data.addedSafes;
+async function loadSafeData() {
+  const listEl = document.getElementById('safe-list');
+  const errorEl = document.getElementById('error-message');
 
-    Object.keys(addedSafes).forEach(safeAddress => {
-      const safeInfo = addedSafes[safeAddress];
-      const name = addressBook[safeAddress]?.name || "Unnamed Safe";
-      const owners = safeInfo.owners?.join(", ") || "No owners";
+  try {
+    const response = await fetch('./safe-data.json');
+    if (!response.ok) throw new Error(`HTTP ${response.status}`);
 
-      const row = document.createElement('tr');
-      row.innerHTML = `
-        <td>${name}</td>
-        <td>${safeAddress}</td>
-        <td>${owners}</td>
+    const data = await response.json();
+
+    // Render safes
+    listEl.innerHTML = '';
+    data.addedSafes.forEach(safe => {
+      const div = document.createElement('div');
+      div.className = 'safe-item';
+      div.innerHTML = `
+        <strong>${safe.name}</strong> <br/>
+        Address: ${safe.address} <br/>
+        Network: ${safe.network}
       `;
-      tableBody.appendChild(row);
+      listEl.appendChild(div);
     });
-  })
-  .catch(error => console.error('Error loading Safe data:', error));
+
+  } catch (err) {
+    console.error('Error loading Safe data:', err);
+    errorEl.textContent = 'Failed to load Safe data. Please try again later.';
+    listEl.textContent = '';
+  }
+}
+
+loadSafeData();
