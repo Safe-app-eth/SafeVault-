@@ -5,20 +5,45 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>SafeVault Dashboard</title>
   <style>
-    body { font-family: Arial, sans-serif; margin: 20px; background: #f4f6f8; }
-    h1 { color: #333; }
-    .safe-list { background: white; padding: 10px; border-radius: 8px; }
-    .safe-item { padding: 6px; border-bottom: 1px solid #ddd; }
+    body { font-family: Arial, sans-serif; margin: 20px; background: #f4f6f8; color: #222; }
+    header { display:flex; align-items:center; justify-content:space-between; gap:1rem; margin-bottom:1rem; }
+    h1 { margin:0; font-size:1.25rem; }
+    .controls { display:flex; gap:.5rem; align-items:center; }
+    .safe-list { background: white; padding: 12px; border-radius: 8px; box-shadow: 0 2px 6px rgba(0,0,0,.04); }
+    .safe-item { padding: 12px; border-bottom: 1px solid #eee; display:flex; justify-content:space-between; gap:1rem; align-items:flex-start; }
     .safe-item:last-child { border-bottom: none; }
+    .safe-left { max-width:75%; }
+    .safe-header { font-weight: 700; font-size: 0.95rem; color:#0b3a66; }
+    .owners { margin-top:6px; font-size:0.86rem; color:#333; }
+    .owner { display:inline-block; padding:3px 6px; border-radius:6px; background:#f1f5f8; margin-right:6px; margin-top:6px; }
+    .owner.signer { background:#e6ffef; border:1px solid #8ae0a4; }
+    .balances { text-align:right; font-size:0.95rem; color:#222; min-width:160px; }
+    .balance-hidden { color: #888; font-style: italic; }
+    .threshold { margin-top:6px; font-size:0.85rem; color:#555; }
     .error { color: red; margin-top: 10px; }
+    button { padding: 0.45rem .7rem; border-radius:6px; border:1px solid #cfd8e3; background: white; cursor:pointer; }
+    button.primary { background:#0b66c3; color:white; border-color:#095aa8; }
+    a.addr-link { color:#0b66c3; text-decoration:none; word-break:break-all; }
+    footer { margin-top:14px; font-size:0.85rem; color:#666; }
+    @media (max-width:600px){ .balances { min-width: 120px; font-size:0.85rem } .safe-left { max-width:62% } }
   </style>
 </head>
 <body>
-  <h1>SafeVault Dashboard</h1>
-  <div id="safe-list" class="safe-list">Loading Safe data...</div>
-  <div id="error-message" class="error"></div>
+  <header>
+    <h1>SafeVault Dashboard</h1>
+    <div class="controls">
+      <button id="refreshBtn">Refresh Data</button>
+      <button id="toggleHidden" class="primary">Hide Balances</button>
+    </div>
+  </header>
 
-  <!-- Load Safe Data Script -->
+  <div id="safe-list" class="safe-list">Loading Safe data…</div>
+  <div id="error-message" class="error" role="alert" aria-live="polite"></div>
+
+  <footer>
+    Files: <code>/public/index.html</code> · <code>/public/load-safe-data.js</code> · <code>/public/safe-data.json</code>
+  </footer>
+
   <script src="./load-safe-data.js"></script>
 </body>
 </html>
