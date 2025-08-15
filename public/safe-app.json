@@ -1,16 +1,20 @@
 {
-  "addressBook": {
-    "0xFDf84a0e7D07bC56f7De56696fc409704cC83a24": {
-      "name": "SafeVault Primary",
-      "chainId": "1"
+  "signerAddress": "0xFDf84a0e7D07bC56f7De56696fc409704cC83a24",
+  "addedSafes": [
+    {
+      "name": "SafeVault Main (Ethereum)",
+      "address": "0x3f1E5c3B2D1a44D9fF5417d30E67D8D4a4F14B96",
+      "network": "Ethereum"
+    },
+    {
+      "name": "SafeVault Arbitrum",
+      "address": "0x1d2B0D489cd3a7bBb4E1c1Aa178F9C93A9051b43",
+      "network": "Arbitrum"
+    },
+    {
+      "name": "SafeVault Polygon",
+      "address": "0xaB9d76D93777a4c1450d648Acd0Ef0C7B41c1c2e",
+      "network": "Polygon"
     }
-  },
-  "addedSafes": {
-    "0xFDf84a0e7D07bC56f7De56696fc409704cC83a24": {
-      "owners": [
-        "0xFDf84a0e7D07bC56f7De56696fc409704cC83a24"
-      ],
-      "threshold": 1
-    }
-  }
+  ]
 }
