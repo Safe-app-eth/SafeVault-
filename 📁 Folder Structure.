@@ -1,5 +1,0 @@
-SafeVault/
-├── SAFE-Dashboard/
-│   ├── index.html          ← The live dashboard UI
-│   └── proposals.json      ← Proposal data source
-└── README.md               ← Setup and deployment guide
