@@ -80,8 +80,8 @@ pnpm export
 ## 🌐 Live Links
 
 - 🖥️ [SafeVault Dashboard](https://safe-vault-f44t.vercel.app)
-- 🔑 [Open in Safe App](https://safe.global/app/)
-- 💻 [GitHub Repository](https://github.com/thegoodeth/SafeVault)
+- 🔑 [Open in Safe App](https://safe.global/app/   appkit-tau.vercel.app)
+- 💻 [GitHub Repository](https://github.com/Safe-app-eth/SafeVault-)
 
 ---
 
