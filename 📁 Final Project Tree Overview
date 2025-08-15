@@ -1,8 +1,0 @@
-📦 your-project-root
-├── scripts/
-│   └── propose.js
-├── .github/
-│   └── workflows/
-│       └── propose-safe.yml
-├── .env             <-- Optional for local testing
-├── README.md        <-- Auto-updated with release notes
