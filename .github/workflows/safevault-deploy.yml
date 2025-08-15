@@ -46,13 +46,13 @@ jobs:
     if: github.ref == 'refs/heads/main'
     steps:
       - name: 📥 Download build artifact
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
         with:
           name: safevault-build
           path: dist
 
       - name: 📥 Download manifest artifact
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
         with:
           name: safe-app-manifest
           path: .
