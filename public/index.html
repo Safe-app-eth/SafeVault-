@@ -2,26 +2,22 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>SafeVault Dashboard</title>
-  <link rel="stylesheet" href="styles.css" />
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; background: #f4f6f8; }
+    h1 { color: #333; }
+    .safe-list { background: white; padding: 10px; border-radius: 8px; }
+    .safe-item { padding: 6px; border-bottom: 1px solid #ddd; }
+    .safe-item:last-child { border-bottom: none; }
+    .error { color: red; margin-top: 10px; }
+  </style>
 </head>
 <body>
   <h1>SafeVault Dashboard</h1>
+  <div id="safe-list" class="safe-list">Loading Safe data...</div>
+  <div id="error-message" class="error"></div>
 
-  <table border="1" id="safeTable">
-    <thead>
-      <tr>
-        <th>Safe Name</th>
-        <th>Safe Address</th>
-        <th>Owners</th>
-      </tr>
-    </thead>
-    <tbody id="safeTableBody">
-      <!-- Filled dynamically -->
-    </tbody>
-  </table>
-
-  <script src="load-safe-data.js"></script>
+  <script src="./load-safe-data.js"></script>
 </body>
 </html>
