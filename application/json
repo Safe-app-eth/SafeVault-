@@ -1,0 +1,13 @@
+fetch("http://localhost:3000/transaction", {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json",
+    "Accept": "application/json"
+  },
+  body: JSON.stringify({
+    to: "0xRecipientAddressHere",
+    value: "0.01"
+  })
+})
+.then(res => res.json())
+.then(console.log)
