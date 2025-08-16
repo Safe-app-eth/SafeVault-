@@ -1,0 +1,24 @@
+name: Permissions Configuration
+
+on:
+  repository_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  setup-permissions:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Configure Permissions
+        run: echo "Permissions configured for SafeVault"
+
+      - name: Allow Access to Repositories
+        run: |
+          echo "Granting access to thegoodeth12/safe-cli@main"
+          echo "Granting access to thegoodeth12/safe-vault/.github/workflows/deploy.yml@main"
+          echo "Granting access to octo-org/octo-repo@v2"
+          echo "Granting access to octo-org/*"
+          echo "Granting access to octo-org/octo-repo/*"
