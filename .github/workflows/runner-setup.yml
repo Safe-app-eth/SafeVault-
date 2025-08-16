@@ -1,0 +1,19 @@
+name: SafeVault Self-hosted Runner
+
+on:
+  workflow_dispatch:
+
+jobs:
+  runner-setup:
+    runs-on: self-hosted
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Install dependencies
+        run: pnpm install
+      - name: Run automation
+        run: pnpm run automation

@@ -1,0 +1,9 @@
+# .github/workflows/permissions.yml
+permissions:
+  content: read
+  actions:
+    - thegoodeth12/safe-cli@main
+    - thegoodeth12/safe-vault/.github/workflows/deploy.yml@main
+    - octo-org/octo-repo@v2
+    - octo-org/*                   # Allows all repositories under the octo-org organization
+    - octo-org/octo-repo/*         # Allows all actions and workflows within the octo-repo repository
