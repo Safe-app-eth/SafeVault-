@@ -1,0 +1,516 @@
+# 🔐 SafeVault — The Fullstack Governance OS for Safe{Wallet}
+
+> A modular, monorepo-powered automation and governance platform for Safe{Wallet}, combining frontend dashboards, GitHub-native proposal workflows, signer quorum checks, and Telegram community sync into one unified ecosystem.
+
+SafeVault is designed for teams, DAOs, and enterprises who want decentralized governance without friction.
+From **issue comments → on-chain proposals** to **real-time Telegram previews**, SafeVault makes Safe-based decision-making transparent, auditable, and unstoppable.
+
+---
+
+## 🚀 Features at a Glance
+
+- **⚛️ React Safe App Dashboard** (Safe SDK + Reown via AppKit)
+- **🤖 GitHub-Native Governance** (issue comments & labels = proposals)
+- **🔐 Signer Threshold Validation** (never execute without quorum)
+- **📲 Real-Time Telegram Sync** (push proposal previews instantly)
+- **📝 Complete Audit Logging** (every action tracked forever)
+- **🧱 Experimental WalletConnect + Reown Login Flow** (future onboarding)
+- **📦 Orchestrator Hub (`SafeVault-Full`)** to unify all modules
+
+---
+
+## 📂 Repository Architecture
+
+```
+SafeVault (monorepo / fullstack)
+│
+├── SafeVault-Frontend
+│   ├── ⚛️ React UI (Safe SDK + Reown via AppKit)
+│   ├── 📄 safe-app.json (manifest) & icon.svg
+│   └── ⚙️ deploy.yml → GitHub Pages / Vercel
+│
+├── SafeVault-Proposal-All-Commands
+│   └── 🤖 GitHub Action: Issue comments → Safe proposals
+│
+├── SafeVault-AutoMerge-SignerStatus
+│   └── 🔐 Auto-merges PRs only if signer quorum is met
+│
+├── SafeVault-LabelBasedTrigger
+│   └── 🏷️ GitHub label triggers proposal creation
+│
+├── SafeVault-Telegram-Preview
+│   └── 📲 Telegram bot posts proposal previews in real time
+│
+├── SafeVault-Full
+│   └── 📦 Orchestrator backend (glues all automations together)
+│
+├── SafeWalletApp
+│   └── 🧱 Experimental Safe + Reown login flow (standalone testbed)
+│
+├── ThresholdChecker
+│   └── 📊 Utility to check Safe signer threshold/weight
+│
+├── log-proposals.yml / logProposalHistory.js
+│   └── 📝 Audit trail of all proposals & signer actions
+```
+---
+
+## 🔄 Governance Workflow
+
+```mermaid
+flowchart TD
+    A[👩 User / Contributor] -->|Issue Comment or Label| B[🤖 GitHub Action]
+    B -->|Build Proposal Payload| C[🔐 ThresholdChecker]
+    C -->|Valid Quorum?| D{Yes / No}
+    D -->|Yes| E[✅ Safe SDK Execution]
+    D -->|No| F[⏳ Wait for More Signers]
+    E --> G[📲 Telegram Preview + Logs]
+    G --> H[📝 Proposal History Log]
+```
+
+---
+
+## ⚡ Quickstart
+
+```bash
+# 1) Clone
+git clone <your-repo-url> && cd SafeVault
+
+# 2) Install monorepo deps (root + frontend)
+pnpm install
+cd SafeVault-Frontend && pnpm install && cd ..
+
+# 3) Frontend dev server
+cd SafeVault-Frontend && pnpm dev
+
+# 4) Deploy to GH Pages
+pnpm -C SafeVault-Frontend run deploy
+```
+
+> Optional: Set `REACT_APP_SAFE_ADDRESS`, `VITE_SAFE_ADDRESS`, or similar envs in `.env` for network/safe configuration.
+
+---
+
+## 🔐 Environment Variables
+
+Create `.env` files as needed.
+
+- **SafeVault-Frontend**
+  - `VITE_SAFE_ADDRESS` – default Safe address
+  - `VITE_CHAIN_ID` – e.g. `1` for Ethereum Mainnet
+  - `VITE_REOWN_PROJECT_ID` – WalletConnect/Reown AppKit project ID
+
+- **SafeVault-Telegram-Preview**
+  - `TELEGRAM_BOT_TOKEN`
+  - `TELEGRAM_CHAT_ID`
+
+- **SafeVault-Full**
+  - `PORT` (default 8787)
+
+---
+
+## 🛠 Commands
+
+```bash
+# Threshold checker
+node ThresholdChecker/index.js --safe 0xYourSafe --threshold 2
+
+# Telegram test
+node SafeVault-Telegram-Preview/sendPreview.js "Hello from SafeVault"
+```
+
+---
+
+## 🔮 Roadmap
+
+- [ ] Cross-chain support (Ethereum, Arbitrum, Polygon, Optimism)
+- [ ] Multi-language SDK support (TypeScript + Python)
+- [ ] Expanded Telegram integrations (votes, confirmations, analytics)
+- [ ] Verified signer badges (✅ Verified by signer)
+- [ ] Plug-and-play SafeVault Orchestrator for enterprises
+
+---
+
+## 📜 License
+
+MIT
+"""
+write(f"{root}/README.md", readme)
+
+# -----------------------------
+# Frontend scaffold (Vite + React + TS minimal)
+# -----------------------------
+frontend = f"{root}/SafeVault-Frontend"
+write(f"{frontend}/package.json", json.dumps({
+  "name": "safevault-frontend",
+  "private": True,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "preview": "vite preview",
+    "deploy": "gh-pages -d dist -b gh-pages"
+  },
+  "dependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "devDependencies": {
+    "@types/react": "^18.2.0",
+    "@types/react-dom": "^18.2.0",
+    "typescript": "^5.4.0",
+    "vite": "^5.0.0",
+    "gh-pages": "^6.1.1"
+  }
+}, indent=2))
+
+write(f"{frontend}/tsconfig.json", json.dumps({
+  "compilerOptions": {
+    "target": "ES2020",
+    "lib": ["ES2020", "DOM"],
+    "jsx": "react-jsx",
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "strict": True,
+    "baseUrl": ".",
+    "paths": {},
+    "types": []
+  }
+}, indent=2))
+
+write(f"{frontend}/vite.config.ts", textwrap.dedent("""
+  import { defineConfig } from 'vite'
+  import react from '@vitejs/plugin-react'
+
+  export default defineConfig({
+    plugins: [react()],
+    base: process.env.GH_PAGES_BASE || '/',
+  })
+"""))
+
+write(f"{frontend}/index.html", textwrap.dedent("""
+  <!doctype html>
+  <html>
+    <head>
+      <meta charset="UTF-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <title>SafeVault</title>
+    </head>
+    <body>
+      <div id="root"></div>
+      <script type="module" src="/src/main.tsx"></script>
+    </body>
+  </html>
+"""))
+
+write(f"{frontend}/.env.example", textwrap.dedent("""
+VITE_SAFE_ADDRESS=0x0000000000000000000000000000000000000000
+VITE_CHAIN_ID=1
+VITE_REOWN_PROJECT_ID=your-reown-appkit-project-id
+"""))
+
+write(f"{frontend}/src/main.tsx", textwrap.dedent("""
+  import React from 'react'
+  import { createRoot } from 'react-dom/client'
+  import App from './App'
+
+  const root = createRoot(document.getElementById('root')!)
+  root.render(<App />)
+"""))
+
+write(f"{frontend}/src/App.tsx", textwrap.dedent("""
+  import React from 'react'
+
+  export default function App() {
+    return (
+      <main style={{ maxWidth: 780, margin: '40px auto', fontFamily: 'ui-sans-serif, system-ui' }}>
+        <h1>🔐 SafeVault</h1>
+        <p>React Safe App scaffold (Vite + TS). Plug in Safe SDK + Reown AppKit here.</p>
+        <ul>
+          <li>Env: <code>VITE_SAFE_ADDRESS</code>, <code>VITE_CHAIN_ID</code>, <code>VITE_REOWN_PROJECT_ID</code></li>
+          <li>Deploy: <code>pnpm run build && pnpm run deploy</code></li>
+        </ul>
+      </main>
+    )
+  }
+"""))
+
+write(f"{frontend}/public/icon.svg", """<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128"><rect width="100%" height="100%" rx="24" fill="#111"/><text x="50%" y="55%" dominant-baseline="middle" text-anchor="middle" font-size="42" fill="#0bf">SV</text></svg>""")
+
+write(f"{frontend}/safe-app.json", json.dumps({
+  "name": "SafeVault",
+  "description": "Fullstack Governance OS for Safe{Wallet}",
+  "iconPath": "public/icon.svg",
+  "url": "http://127.0.0.1/#",
+  "verified": False,
+  "version": "1.0.0"
+}, indent=2))
+
+# GitHub Pages deploy workflow (frontend)
+write(f"{root}/.github/workflows/deploy.yml", textwrap.dedent("""
+name: Deploy SafeVault Frontend (GitHub Pages)
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'SafeVault-Frontend/**'
+      - '.github/workflows/deploy.yml'
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'pnpm'
+      - name: Install deps
+        run: |
+          cd SafeVault-Frontend
+          pnpm install
+      - name: Build
+        run: |
+          cd SafeVault-Frontend
+          pnpm build
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: SafeVault-Frontend/dist
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+"""))
+
+# -----------------------------
+# Governance Actions
+# -----------------------------
+
+# Proposals via issue comments
+write(f"{root}/.github/workflows/proposal-all-commands.yml", textwrap.dedent("""
+name: Proposals via Issue Comments
+on:
+  issue_comment:
+    types: [created]
+permissions:
+  issues: write
+  contents: read
+jobs:
+  propose:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Parse command
+        id: parse
+        run: |
+          echo "COMMENT=${{ github.event.comment.body }}" >> $GITHUB_OUTPUT
+      - name: Build proposal payload (stub)
+        id: build
+        run: |
+          node -e "console.log('Build Safe tx from comment:', process.env.COMMENT)" 
+        env:
+          COMMENT: ${{ steps.parse.outputs.COMMENT }}
+      - name: Log proposal
+        run: |
+          node logProposalHistory.js "${{ github.event.comment.user.login }}" "${{ github.event.comment.body }}"
+"""))
+
+# AutoMerge with Signer Status (stub)
+write(f"{root}/.github/workflows/auto-merge-signer-status.yml", textwrap.dedent("""
+name: AutoMerge with Signer Status
+on:
+  pull_request:
+    types: [labeled, opened, synchronize, reopened]
+permissions:
+  pull-requests: write
+  contents: read
+jobs:
+  check-and-merge:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Threshold check (stub)
+        run: |
+          node ThresholdChecker/index.js --safe 0x0000000000000000000000000000000000000000 --threshold 2 || exit 1
+      - name: Auto-merge if OK (stub)
+        run: echo "Would auto-merge PR if quorum OK"
+"""))
+
+# Label-based trigger
+write(f"{root}/.github/workflows/label-based-trigger.yml", textwrap.dedent("""
+name: Label-Based Proposal Trigger
+on:
+  pull_request:
+    types: [labeled]
+permissions:
+  issues: write
+  contents: read
+jobs:
+  trigger:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check label
+        id: label
+        run: |
+          echo "LABEL='${{ github.event.label.name }}'"
+          test "${{ github.event.label.name }}" = "safe:execute" || exit 0
+      - name: Build + Log Proposal (stub)
+        run: |
+          node logProposalHistory.js "${{ github.actor }}" "Label-triggered: ${{ github.event.pull_request.number }}"
+"""))
+
+# Log Proposals (workflow + script)
+write(f"{root}/log-proposals.yml", textwrap.dedent("""
+# Centralized YAML history of proposals and actions.
+# This file is appended by logProposalHistory.js
+history: []
+"""))
+
+write(f"{root}/logProposalHistory.js", textwrap.dedent("""
+const fs = require('fs')
+const path = require('path')
+const file = path.join(__dirname, 'log-proposals.yml')
+
+function appendYamlEntry(user, action) {
+  const time = new Date().toISOString()
+  let doc = ''
+  if (fs.existsSync(file)) doc = fs.readFileSync(file, 'utf8')
+  if (!doc.trim()) doc = 'history: []\\n'
+  const entry = `- time: ${time}\\n  user: ${user}\\n  action: ${action.replace(/\\n/g,' ')}\\n`
+  const updated = doc.replace(/history:\\s*\\[\\]/, 'history:\\n') + entry
+  fs.writeFileSync(file, updated)
+  console.log('Logged action:', action)
+}
+
+const [,, user, action] = process.argv
+appendYamlEntry(user || 'unknown', action || 'no-action')
+"""))
+
+# -----------------------------
+# ThresholdChecker (minimal CLI)
+# -----------------------------
+checker_dir = f"{root}/ThresholdChecker"
+write(f"{checker_dir}/package.json", json.dumps({
+  "name": "threshold-checker",
+  "version": "0.1.0",
+  "type": "module",
+  "bin": {"threshold-checker": "index.js"},
+  "dependencies": {}
+}, indent=2))
+
+write(f"{checker_dir}/index.js", textwrap.dedent("""
+#!/usr/bin/env node
+// Minimal stub: checks provided --threshold and fakes signer count = 2
+const args = process.argv.slice(2)
+const get = (flag) => {
+  const i = args.indexOf(flag)
+  return i >= 0 ? args[i+1] : undefined
+}
+const safe = get('--safe') || '0x0'
+const threshold = parseInt(get('--threshold') || '1', 10)
+const signerCount = 2 // TODO: integrate Safe SDK + chain RPC
+console.log(`Checking Safe ${safe} with signerCount=${signerCount}, threshold=${threshold}`)
+if (signerCount >= threshold) {
+  console.log('✅ Quorum OK')
+  process.exit(0)
+} else {
+  console.log('❌ Quorum NOT met')
+  process.exit(1)
+}
+"""))
+
+# -----------------------------
+# Telegram Preview (minimal)
+# -----------------------------
+tele = f"{root}/SafeVault-Telegram-Preview"
+write(f"{tele}/package.json", json.dumps({
+  "name":"safevault-telegram-preview",
+  "version":"0.1.0",
+  "type":"module",
+  "dependencies": {"node-fetch":"^3.3.2"}
+}, indent=2))
+
+write(f"{tele}/sendPreview.js", textwrap.dedent("""
+import fetch from 'node-fetch'
+
+const token = process.env.TELEGRAM_BOT_TOKEN
+const chatId = process.env.TELEGRAM_CHAT_ID
+const text = process.argv.slice(2).join(' ') || 'SafeVault preview: (empty)'
+
+if (!token || !chatId) {
+  console.error('Missing TELEGRAM_BOT_TOKEN or TELEGRAM_CHAT_ID')
+  process.exit(1)
+}
+
+const url = `https://api.telegram.org/bot${token}/sendMessage`
+const res = await fetch(url, {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({ chat_id: chatId, text })
+})
+const data = await res.json()
+console.log('Telegram response:', data)
+"""))
+
+# -----------------------------
+# SafeVault-Full (orchestrator stub)
+# -----------------------------
+full = f"{root}/SafeVault-Full"
+write(f"{full}/package.json", json.dumps({
+  "name":"safevault-full",
+  "version":"0.1.0",
+  "type":"module",
+  "scripts": {"start":"node server.js"},
+  "dependencies": {"express":"^4.19.2"}
+}, indent=2))
+
+write(f"{full}/server.js", textwrap.dedent("""
+import express from 'express'
+const app = express()
+const PORT = process.env.PORT || 8787
+
+app.get('/health', (_req, res) => res.json({ ok: true }))
+app.post('/webhook/github', express.json(), (req, res) => {
+  console.log('GitHub webhook:', req.body.action || 'unknown')
+  res.json({ ok: true })
+})
+
+app.listen(PORT, () => console.log(`SafeVault-Full running on :${PORT}`))
+"""))
+
+# -----------------------------
+# Experimental SafeWalletApp (readme-only)
+# -----------------------------
+write(f"{root}/SafeWalletApp/README.md", textwrap.dedent("""
+# SafeWalletApp (Experimental)
+Prototype space for Safe + Reown (WalletConnect v2) onboarding flows.
+Integrate AppKit and test EOA/Smart Account logins here.
+"""))
+
+# -----------------------------
+# GitHub Action local READMEs
+# -----------------------------
+write(f"{root}/SafeVault-Proposal-All-Commands/README.md", "# Proposals via Issue Comments\nConverts issue comments into Safe proposal payloads (stubbed).")
+write(f"{root}/SafeVault-AutoMerge-SignerStatus/README.md", "# AutoMerge + Signer Status\nAuto-merges PRs only when quorum is met (stubbed).")
+write(f"{root}/SafeVault-LabelBasedTrigger/README.md", "# Label-Based Trigger\nAdds label-driven proposal creation 
