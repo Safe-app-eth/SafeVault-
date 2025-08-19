@@ -1,25 +1,27 @@
-import express from 'express'
-import bodyParser from 'body-parser'
-import sendTransaction from './sendTransaction.js'
+import express from "express";
+import bodyParser from "body-parser";
+import { ethers } from "ethers";
 
-const app = express()
-app.use(bodyParser.json())
+const app = express();
+app.use(bodyParser.json());
 
-app.post('/transaction', async (req, res) => {
+app.post("/verify", async (req, res) => {
   try {
-    const { to, value, data } = req.body
+    const { address, signature, message } = req.body;
 
-    if (!to || !value) {
-      return res.status(400).json({ error: "Missing required fields: 'to' and 'value'" })
+    // Recover signer from signature
+    const recovered = ethers.verifyMessage(message, signature);
+
+    if (recovered.toLowerCase() === address.toLowerCase()) {
+      console.log("✅ Verified Safe owner:", address);
+      return res.json({ success: true });
+    } else {
+      return res.json({ success: false, error: "Invalid signature" });
     }
-
-    const result = await sendTransaction({ to, value, data })
-    res.json({ success: true, result })
-
-  } catch (error) {
-    console.error(error)
-    res.status(500).json({ success: false, error: error.message })
+  } catch (err) {
+    console.error("Verification error:", err);
+    res.json({ success: false, error: err.message });
   }
-})
+});
 
-app.listen(3000, () => console.log("🚀 SafeVault API running on port 3000"))
+app.listen(4000, () => console.log("🚀 Server running on http://localhost:4000"));
