@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 📖 SafeVault Documentation
+    url: https://safe-vault-f44t.vercel.app
+    about: Check the docs before opening a new issue
+  - name: 💬 Discussions
+    url: https://github.com/Safe-app-eth/SafeVault-/discussions
+    about: Ask questions and discuss ideas here
