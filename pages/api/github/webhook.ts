@@ -7,7 +7,12 @@ function verifySignature(req) {
   const payload = JSON.stringify(req.body);
   const hmac = crypto.createHmac('sha256', GITHUB_SECRET);
   const digest = 'sha256=' + hmac.update(payload).digest('hex');
-  return crypto.timingSafeEqual(Buffer.from(signature), Buffer.from(digest));
+
+  try {
+    return crypto.timingSafeEqual(Buffer.from(signature), Buffer.from(digest));
+  } catch {
+    return false;
+  }
 }
 
 export default async function handler(req, res) {
@@ -24,12 +29,12 @@ export default async function handler(req, res) {
   switch (event) {
     case 'push':
       console.log(`🔁 Push detected: ${payload.head_commit?.message}`);
-      // TODO: Trigger vault sync or update dashboard state
+      // Trigger vault sync or update dashboard state here
       break;
 
     case 'pull_request':
       console.log(`📥 PR opened: ${payload.pull_request?.title}`);
-      // TODO: Notify dashboard or run CI check
+      // Trigger notification or CI logic here
       break;
 
     default:
