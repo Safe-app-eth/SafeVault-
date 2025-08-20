@@ -1,7 +1,12 @@
-# Frontend
-frontend/ @Safe-app-eth/frontend-team
+# Example: set CODEOWNERS by directory or file pattern
 
-# Backend
+# Adjust to your teams and repos
+*       @your-org/core-maintainers
+docs/** @your-org/docs
+frontend/** @your-org/web
+backend/**  @your-org/api
+Frontend/** @Safe-app-eth/frontend-team
+
 backend/ @Safe-app-eth/backend-team
 
 # Shared infra
