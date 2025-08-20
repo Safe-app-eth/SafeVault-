@@ -1,17 +1,15 @@
-import type { NextApiRequest, NextApiResponse } from 'next';
-import { createNodeMiddleware, createProbot } from 'probot';
-import { App } from '../../../../../github/githubApp';
+export default async function handler(req, res) {
+  if (req.method !== 'POST') return res.status(405).end();
 
-const probot = createProbot({
-  overrides: {
-    // Supply environment secrets
-    env: process.env,
-  },
-});
+  const event = req.headers['x-github-event'];
+  const payload = req.body;
 
-const middleware = createNodeMiddleware(App, { probot });
+  if (event === 'push') {
+    const commitMsg = payload.commits?.[0]?.message || 'No commit message';
+    console.log(`🔁 GitHub Sync Triggered: ${commitMsg}`);
 
-export default function handler(req: NextApiRequest, res: NextApiResponse) {
-  // @ts-ignore
-  return middleware(req, res);
+    // TODO: Trigger vault sync or update dashboard state
+  }
+
+  res.status(200).json({ success: true });
 }
