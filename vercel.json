@@ -1,50 +1,39 @@
 {
-  "version": 2,
-  "name": "safevault-dashboard",
   "builds": [
     {
       "src": "package.json",
       "use": "@vercel/static-build",
-      "config": { "distDir": "dist" }
+      "config": {
+        "distDir": "build"
+      }
     }
   ],
-  "env": {
-    "SAFE_ADDRESS": "@safe_address",
-    "NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID": "@8a81e704ed22e53debea9db88f91bfcb",
-    "NEXT_PUBLIC_REOWN_API": "@0e86b980-2298-4978-8dd5-0b9e7af95016",
-    "NEXT_PUBLIC_SAFE_CHAIN_ID": "1",
-    "NEXT_PUBLIC_GITHUB_REPO": "thegoodeth/SafeVault"
-  },
   "rewrites": [
-    { "source": "/manifest.json", "destination": "/public/manifest.json" },
-    { "source": "/(.*)", "destination": "/index.html" }
+    {
+      "source": "/(.*)",
+      "destination": "/"
+    }
   ],
-  "redirects": [],
+  "redirects": [
+    {
+      "source": "/old-route",
+      "destination": "/new-route",
+      "permanent": true
+    }
+  ],
   "headers": [
     {
       "source": "/(.*)",
       "headers": [
-        { "key": "X-Frame-Options", "value": "ALLOWALL" }
-      ]
-    },
-    {
-      "source": "/(.*).(js|css)",
-      "headers": [
-        { "key": "Cache-Control", "value": "max-age=31536000" }
-      ]
-    },
-    {
-      "source": "/(.*).html",
-      "headers": [
-        { "key": "Cache-Control", "value": "no-cache" }
+        {
+          "key": "X-Frame-Options",
+          "value": "DENY"
+        },
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        }
       ]
     }
-  ],
-  "routes": [
-    { "src": "/(.*)", "dest": "/$1" }
-  ],
-  "outputDirectory": "docs",
-  "cleanUrls": true,
-  "trailingSlash": false,
-  "description": "Static Safe{Wallet} proposal viewer with signer status, GitHub automation, multi-chain support, and live previews via Vercel."
+  ]
 }
