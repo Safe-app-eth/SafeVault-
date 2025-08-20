@@ -1,0 +1,26 @@
+contract VaultDAO {
+    struct Proposal {
+        string description;
+        uint voteCount;
+        bool executed;
+    }
+
+    Proposal[] public proposals;
+    mapping(address => bool) public voters;
+
+    function createProposal(string memory desc) public {
+        proposals.push(Proposal(desc, 0, false));
+    }
+
+    function vote(uint proposalId) public {
+        require(!voters[msg.sender], "Already voted");
+        proposals[proposalId].voteCount++;
+        voters[msg.sender] = true;
+    }
+
+    function executeProposal(uint proposalId) public {
+        require(proposals[proposalId].voteCount > threshold, "Not enough votes");
+        proposals[proposalId].executed = true;
+        // Apply changes to vault config
+    }
+}
