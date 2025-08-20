@@ -1,4 +1,5 @@
-import React from 'react';
+GITHUB_WEBHOOK_SECRET=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
+
 
 const VaultCard = ({ address, balanceUSD, token, chain, linkedApp, threshold, hidden }) => {
   return (
