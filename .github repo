@@ -1,6 +1,0 @@
-# Example: set CODEOWNERS by directory or file pattern
-# Adjust to your teams and repos
-*       @your-org/core-maintainers
-docs/** @your-org/docs
-frontend/** @your-org/web
-backend/**  @your-org/api
