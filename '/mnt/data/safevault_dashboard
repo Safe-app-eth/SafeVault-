@@ -1,63 +1,452 @@
-# README.md content
-readme_content = """# 🔐 SafeVault GitHub Dashboard
+# Package.json
+package_json = {
+  "name": "safevault-dashboard",
+  "version": "1.4.1",
+  "private": True,
+  "type": "module",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "monitor": "node scripts/monitor.js"
+  },
+  "dependencies": {
+    "@safe-global/protocol-kit": "^5.0.0",
+    "@safe-global/safe-core-sdk-types": "^5.0.0",
+    "@safe-global/safe-modules-sdk": "^1.0.0",
+    "@safe-global/safe-service-client": "^2.0.0",
+    "@walletconnect/ethereum-provider": "^2.11.0",
+    "@reown/appkit": "^0.1.0",
+    "axios": "^1.7.2",
+    "ethers": "^6.13.0",
+    "next": "14.2.5",
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
+    "zustand": "^4.5.2"
+  },
+  "devDependencies": {
+    "@types/node": "^20.14.9",
+    "@types/react": "^18.3.3",
+    "@types/react-dom": "^18.3.0",
+    "eslint": "^8.57.0",
+    "eslint-config-next": "14.2.5",
+    "typescript": "^5.5.3"
+  }
+}
+open(f"{base}/package.json","w").write(json.dumps(package_json, indent=2))
 
-**Live Dashboard:**  
-🌐 [safe-vault-f44t.vercel.app](https://safe-vault-f44t.vercel.app) — real-time governance updates  
-🗂️ [safe-app-eth.github.io/safevault-](https://safe-app-eth.github.io/safevault-/) — static GitHub archive
+# tsconfig.json
+open(f"{base}/tsconfig.json","w").write(textwrap.dedent("""
+{
+  "compilerOptions": {
+    "target": "ES2020",
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "jsx": "preserve",
+    "forceConsistentCasingInFileNames": true
+  },
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "**/*.js", "**/*.cjs", "**/*.mjs"],
+  "exclude": ["node_modules"]
+}
+"""))
 
-... [Truncated for brevity in this comment block, full content is in file] ...
-© 2025 SafeVault · All rights reserved.
-"""
+# next-env.d.ts
+open(f"{base}/next-env.d.ts","w").write("/// <reference types=\"next\" />\n/// <reference types=\"next/image-types/global\" />\n")
 
-# update-proposals.yml content
-workflow_content = """name: 🔄 Update Safe Proposals
+# next.config.mjs
+open(f"{base}/next.config.mjs","w").write(textwrap.dedent("""
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  reactStrictMode: true,
+  experimental: { turbo: false }
+};
+export default nextConfig;
+"""))
 
-on:
-  schedule:
-    - cron: '*/15 * * * *'
-  workflow_dispatch:
+# .env.example
+open(f"{base}/.env.example","w").write(textwrap.dedent("""
+# === RPC endpoints (HTTP) ===
+ETH_MAINNET=https://eth-mainnet.g.alchemy.com/v2/h-wrcgtJSgdi7S6-l5rjp
+ARBITRUM_MAINNET=https://arb-mainnet.g.alchemy.com/v2/h-wrcgtJSgdi7S6-l5rjp
+POLYGON_MAINNET=https://polygon-mainnet.g.alchemy.com/v2/h-wrcgtJSgdi7S6-l5rjp
+BNB_MAINNET=https://bnb-mainnet.g.alchemy.com/v2/h-wrcgtJSgdi7S6-l5rjp
+OPT_MAINNET=https://opt-mainnet.g.alchemy.com/v2/h-wrcgtJSgdi7S6-l5rjp
+BASE_MAINNET=https://mainnet.infura.io/v3/d287bc172bba4c66a78315df41afa70c
+ABSTRACT_MAINNET=https://abstract-mainnet.g.alchemy.com/v2/h-wrcgtJSgdi7S6-l5rjp
+UNICHAIN_MAINNET=https://unichain-mainnet.g.alchemy.com/v2/h-wrcgtJSgdi7S6-l5rjp
 
-jobs:
-  update:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
+# Optional WebSocket endpoints (recommended for realtime)
+# Provide matching *_WS envs if you have them; otherwise the monitor will poll.
+ETH_MAINNET_WS=
+ARBITRUM_MAINNET_WS=
+POLYGON_MAINNET_WS=
+BNB_MAINNET_WS=
+OPT_MAINNET_WS=
+BASE_MAINNET_WS=
+ABSTRACT_MAINNET_WS=
+UNICHAIN_MAINNET_WS=
 
-      - name: Fetch latest proposals
-        run: |
-          curl -s https://safe-vault-f44t.vercel.app/api/proposals -o docs/proposals.json
+# Safe
+SAFE_SIGNER=0xFDf84a0e7D07bC56f7De56696fc409704cC83a24
 
-      - name: Commit and push
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add docs/proposals.json
-          git commit -m "🔄 Update proposals.json from live backend" || echo "No changes to commit"
-          git push
-"""
+# Notifications (choose one or both)
+NOTIFY_WEBHOOK=
+TELEGRAM_BOT_TOKEN=
+TELEGRAM_CHAT_ID=
+"""))
 
-# Minimal index.html content
-index_html_content = """<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SafeVault Proposals</title>
-</head>
-<body>
-  <h1>SafeVault Proposals Dashboard</h1>
-  <p>Live proposals synced from SafeVault backend.</p>
-  <pre id="proposals">Loading proposals...</pre>
-  <script>
-    fetch('proposals.json')
-      .then(res => res.json())
-      .then(data => {
-        document.getElementById('proposals').textContent = JSON.stringify(data, null, 2);
-      })
-      .catch(err => {
-        document.getElementById('proposals').textContent = 'Failed to load proposals.';
-      });
-  </script>
-</body>
-</html>
+# app/layout.tsx and app/page.tsx and styles
+os.makedirs(f"{base}/app", exist_ok=True)
+open(f"{base}/app/layout.tsx","w").write(textwrap.dedent("""
+export default function RootLayout({ children }: { children: React.ReactNode }) {
+  return (
+    <html lang="en">
+      <body style={{ fontFamily: 'system-ui, sans-serif', background: '#f8fafc', color: '#111827' }}>
+        {children}
+      </body>
+    </html>
+  );
+}
+"""))
+
+open(f"{base}/app/page.tsx","w").write(textwrap.dedent("""
+'use client';
+import { useEffect, useState } from 'react';
+import networks from '../config/networks.json';
+import contracts from '../config/contracts.json';
+
+type ReleaseInfo = { version: string; title: string; date: string; body: string };
+
+export default function Page() {
+  const [release, setRelease] = useState<ReleaseInfo | null>(null);
+
+  useEffect(() => {
+    fetch('/changelog.json').then(async (r) => {
+      if (!r.ok) return;
+      const j = await r.json();
+      setRelease(j);
+    }).catch(() => {});
+  }, []);
+
+  return (
+    <main style={{ padding: '2rem', maxWidth: 960, margin: '0 auto' }}>
+      <header style={{ textAlign: 'center', marginBottom: '2rem' }}>
+        <h1>🚀 SafeVault Dashboard</h1>
+        <p>Latest release & multi-chain monitoring</p>
+      </header>
+
+      <section style={{ background:'#fff', padding:'1.5rem', borderRadius:8, boxShadow:'0 2px 6px rgba(0,0,0,0.1)' }}>
+        <h2>Latest Release</h2>
+        {release ? (
+          <div>
+            <p><strong>{release.title}</strong></p>
+            <p><strong>Version:</strong> {release.version} &nbsp; <strong>Date:</strong> {release.date}</p>
+            <pre style={{ background:'#f3f4f6', padding:'1rem', borderRadius:6, whiteSpace:'pre-wrap' }}>{release.body}</pre>
+          </div>
+        ) : <p>Loading… (ensure changelog.json exists in project root or /public)</p>}
+      </section>
+
+      <section style={{ background:'#fff', padding:'1.5rem', borderRadius:8, boxShadow:'0 2px 6px rgba(0,0,0,0.1)', marginTop:'1rem' }}>
+        <h2>Networks (RPC)</h2>
+        <ul>
+          {Object.entries(networks.rpc).map(([key, val]: any) => (
+            <li key={key}><strong>{key}</strong>: {JSON.stringify(val)}</li>
+          ))}
+        </ul>
+      </section>
+
+      <section style={{ background:'#fff', padding:'1.5rem', borderRadius:8, boxShadow:'0 2px 6px rgba(0,0,0,0.1)', marginTop:'1rem' }}>
+        <h2>Watched Contracts</h2>
+        <ul>
+          {contracts.list.map((c: any) => (
+            <li key={c.address}><strong>{c.name}</strong> ({c.network}) — {c.address}</li>
+          ))}
+        </ul>
+      </section>
+    </main>
+  );
+}
+"""))
+
+# config files
+os.makedirs(f"{base}/config", exist_ok=True)
+open(f"{base}/config/networks.json","w").write(json.dumps({
+  "signer": "0xFDf84a0e7D07bC56f7De56696fc409704cC83a24",
+  "rpc": {
+    "ethereum": {
+      "alchemy": "https://eth-mainnet.g.alchemy.com/v2/h-wrcgtJSgdi7S6-l5rjp",
+      "infura": "https://mainnet.infura.io/v3/d287bc172bba4c66a78315df41afa70c"
+    },
+    "arbitrum": {
+      "alchemy": "https://arb-mainnet.g.alchemy.com/v2/h-wrcgtJSgdi7S6-l5rjp"
+    },
+    "polygon": {
+      "alchemy": "https://polygon-mainnet.g.alchemy.com/v2/h-wrcgtJSgdi7S6-l5rjp"
+    },
+    "bnb": {
+      "alchemy": "https://bnb-mainnet.g.alchemy.com/v2/h-wrcgtJSgdi7S6-l5rjp"
+    },
+    "optimism": {
+      "alchemy": "https://opt-mainnet.g.alchemy.com/v2/h-wrcgtJSgdi7S6-l5rjp"
+    },
+    "unichain": {
+      "alchemy": "https://unichain-mainnet.g.alchemy.com/v2/h-wrcgtJSgdi7S6-l5rjp"
+    },
+    "abstract": {
+      "alchemy": "https://abstract-mainnet.g.alchemy.com/v2/h-wrcgtJSgdi7S6-l5rjp"
+    }
+  }
+}, indent=2))
+
+open(f"{base}/config/contracts.json","w").write(json.dumps({
+  "list": [
+    {"name":"SafeVault Core","address":"0xYourCoreContractAddressHere","network":"ethereum"},
+    {"name":"SafeVault Treasury","address":"0xYourTreasuryContractAddressHere","network":"arbitrum"},
+    {"name":"SafeVault Module","address":"0xYourModuleContractAddressHere","network":"polygon"}
+  ]
+}, indent=2))
+
+# lib files
+os.makedirs(f"{base}/lib", exist_ok=True)
+open(f"{base}/lib/networks.ts","w").write(textwrap.dedent("""
+export const NETWORKS = {
+  ethereum: { chainId: 1,   rpcUrl: process.env.ETH_MAINNET || "" },
+  arbitrum: { chainId: 42161, rpcUrl: process.env.ARBITRUM_MAINNET || "" },
+  polygon:  { chainId: 137, rpcUrl: process.env.POLYGON_MAINNET || "" },
+  bnb:      { chainId: 56,  rpcUrl: process.env.BNB_MAINNET || "" },
+  optimism: { chainId: 10,  rpcUrl: process.env.OPT_MAINNET || "" },
+  base:     { chainId: 8453, rpcUrl: process.env.BASE_MAINNET || "" },
+  abstract: { chainId: 2741, rpcUrl: process.env.ABSTRACT_MAINNET || "" },
+  unichain: { chainId: 130, rpcUrl: process.env.UNICHAIN_MAINNET || "" }
+} as const;
+"""))
+
+open(f"{base}/lib/safeClient.ts","w").write(textwrap.dedent("""
+import { ethers } from "ethers";
+import Safe, { EthersAdapter } from "@safe-global/protocol-kit";
+
+export async function initSafe(safeAddress: string, rpcUrl: string) {
+  const provider = new ethers.JsonRpcProvider(rpcUrl);
+  const ethAdapter = new EthersAdapter({ ethers, signerOrProvider: provider });
+  const safe = await Safe.create({ ethAdapter, safeAddress });
+  return safe;
+}
+"""))
+
+open(f"{base}/lib/notify.ts","w").write(textwrap.dedent("""
+import axios from "axios";
+
+export async function notify(payload: any) {
+  const webhook = process.env.NOTIFY_WEBHOOK;
+  const bot = process.env.TELEGRAM_BOT_TOKEN;
+  const chatId = process.env.TELEGRAM_CHAT_ID;
+
+  if (webhook) {
+    try { await axios.post(webhook, payload); } catch {}
+  }
+  if (bot && chatId) {
+    try {
+      const url = `https://api.telegram.org/bot${bot}/sendMessage`;
+      const text = '🔔 SafeVault Alert:\\n' + '```\\n' + JSON.stringify(payload, null, 2) + '\\n```';
+      await axios.post(url, { chat_id: chatId, text, parse_mode: "Markdown" });
+    } catch {}
+  }
+  if (!webhook && !bot) {
+    console.log("Notification:", payload);
+  }
+}
+"""))
+
+open(f"{base}/lib/contracts.ts","w").write(textwrap.dedent("""
+import { ethers } from "ethers";
+import { notify } from "./notify.js";
+
+type NetworkConfig = { http: string; ws?: string };
+
+export type MonitorConfig = {
+  networks: Record<string, NetworkConfig>;
+  contracts: { name: string; address: string; network: string }[];
+};
+
+const TRANSFER_TOPIC = ethers.id("Transfer(address,address,uint256)");
+const APPROVAL_TOPIC = ethers.id("Approval(address,address,uint256)");
+
+export function createProvider(cfg: NetworkConfig) {
+  if (cfg.ws && cfg.ws.startsWith("wss://")) {
+    return new ethers.WebSocketProvider(cfg.ws);
+  }
+  return new ethers.JsonRpcProvider(cfg.http);
+}
+
+export async function pollLogs(provider: ethers.AbstractProvider, address: string, fromBlock: number, toBlock: number) {
+  const filter = {
+    address,
+    topics: [[TRANSFER_TOPIC, APPROVAL_TOPIC]],
+    fromBlock,
+    toBlock
+  };
+  return provider.getLogs(filter);
+}
+
+export async function startMonitorOnce(name: string, network: string, provider: ethers.AbstractProvider, address: string, lastBlock: number) {
+  const latest = await provider.getBlockNumber();
+  if (latest < lastBlock) return latest;
+  const logs = await pollLogs(provider, address, lastBlock, latest);
+  for (const log of logs) {
+    const topic = log.topics[0];
+    const payload = {
+      type: topic === TRANSFER_TOPIC ? "Transfer" : "Approval",
+      contract: { name, address },
+      network,
+      blockNumber: log.blockNumber,
+      txHash: log.transactionHash,
+      logIndex: log.index
+    };
+    await notify(payload);
+  }
+  return latest + 1;
+}
+"""))
+
+# scripts/monitor.js
+os.makedirs(f"{base}/scripts", exist_ok=True)
+open(f"{base}/scripts/monitor.js","w").write(textwrap.dedent("""
+import { config as loadEnv } from 'node:process';
+import fs from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+import { createProvider, startMonitorOnce } from '../lib/contracts.js';
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+// Load JSON configs shipped with the app
+const networksPath = path.join(__dirname, '..', 'config', 'networks.json');
+const contractsPath = path.join(__dirname, '..', 'config', 'contracts.json');
+
+const networksJson = JSON.parse(fs.readFileSync(networksPath, 'utf8'));
+const contractsJson = JSON.parse(fs.readFileSync(contractsPath, 'utf8'));
+
+function mergeEnvRpc(key, fallback) {
+  // map envs by heuristic
+  const map = {
+    ethereum: process.env.ETH_MAINNET,
+    arbitrum: process.env.ARBITRUM_MAINNET,
+    polygon: process.env.POLYGON_MAINNET,
+    bnb: process.env.BNB_MAINNET,
+    optimism: process.env.OPT_MAINNET,
+    base: process.env.BASE_MAINNET,
+    abstract: process.env.ABSTRACT_MAINNET,
+    unichain: process.env.UNICHAIN_MAINNET
+  };
+  const http = map[key] || Object.values(fallback)[0];
+  const wsEnv = (process.env[(key.toUpperCase()) + "_MAINNET_WS"]);
+  return { http, ws: wsEnv };
+}
+
+async function main() {
+  console.log("🔭 SafeVault Monitor starting…");
+  const state = new Map(); // key => lastBlock
+
+  // Build provider per network
+  const providers = {};
+  for (const net of Object.keys(networksJson.rpc)) {
+    providers[net] = createProvider(mergeEnvRpc(net, networksJson.rpc[net]));
+  }
+
+  // Initialize last block cursors
+  for (const c of contractsJson.list) {
+    const prov = providers[c.network];
+    if (!prov) { console.warn(`No provider for network ${c.network}`); continue; }
+    const latest = await prov.getBlockNumber();
+    state.set(`${c.network}:${c.address.toLowerCase()}`, latest);
+  }
+
+  // Polling loop
+  const intervalMs = 15000;
+  setInterval(async () => {
+    for (const c of contractsJson.list) {
+      const key = `${c.network}:${c.address.toLowerCase()}`;
+      const prov = providers[c.network];
+      if (!prov) continue;
+      const from = state.get(key) || await prov.getBlockNumber();
+      const nextFrom = await startMonitorOnce(c.name, c.network, prov, c.address, from);
+      state.set(key, nextFrom);
+    }
+  }, intervalMs);
+}
+
+main().catch((e) => {
+  console.error(e);
+  process.exit(1);
+});
+"""))
+
+# public assets
+os.makedirs(f"{base}/public", exist_ok=True)
+open(f"{base}/public/safe-app.json","w").write(textwrap.dedent("""
+{
+  "name": "SafeVault",
+  "description": "Multi-chain Safe dashboard with verified signer monitoring.",
+  "iconPath": "icon.png",
+  "url": "http://127.0.0.1:3000/#",
+  "safeAddress": "0xFDf84a0e7D07bC56f7De56696fc409704cC83a24"
+}
+"""))
+# placeholder icon
+open(f"{base}/public/icon.png","wb").write(b"")
+
+# Root changelog.json placeholder (so the UI loads before workflow runs)
+open(f"{base}/changelog.json","w").write(json.dumps({
+  "version": "v1.4.1",
+  "title": "SafeVault v1.4.1 – Verified Deployment & Reown Integration",
+  "date": "2025-08-20",
+  "body": "- Initial bundle with Safe SDK, multi-chain RPCs, and monitor script."
+}, indent=2))
+
+# README.md
+open(f"{base}/README.md","w").write(textwrap.dedent("""
+# SafeVault Dashboard (v1.4.1)
+
+Production-ready Next.js + TypeScript Safe dashboard with:
+- Multi-chain RPC configs
+- Verified signer monitoring
+- Contract event polling (Transfer/Approval)
+- Telegram/Webhook notifications
+- Safe App manifest
+
+## Quick Start
+
+```bash
+cp .env.example .env.local
+# (optional) fill *_WS endpoints and notifications
+yarn
+yarn dev
+# In another terminal, start the monitor (server-side polling)
+yarn monitor
+```
+
+Open http://localhost:3000
+
+### Configure
+- Edit `config/contracts.json` with your deployed contract addresses.
+- Edit `config/networks.json` if you want to add/rename networks.
+- Set envs in `.env.local` (RPCs, NOTIFY_WEBHOOK or TELEGRAM_*).
+
+### Safe App Manifest
+`public/safe-app.json` points to `http://127.0.0.1:3000/#` and signer `0xFDf84a0e7D07bC56f7De56696fc409704cC83a24`.
+
+### Release Data
+`changelog.json` is read by the UI. In CI, your release workflow should overwrite it (or serve from /public).
+
+### Notes
+- Realtime best with WebSockets. If WS not provided, the monitor uses 15s polling via HTTP RPC.
+- Extend `lib/contracts.ts` to include Safe-specific events or custom ABIs.
+"""))
