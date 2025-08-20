@@ -1,6 +1,11 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": [
-    "config:recommended"
+  "extends": ["config:recommended", ":semanticCommits"],
+  "labels": ["dependencies"],
+  "prHourlyLimit": 5,
+  "rangeStrategy": "bump",
+  "packageRules": [
+    { "matchUpdateTypes": ["major"], "labels": ["breaking"], "automerge": false },
+    { "matchManagers": ["github-actions"], "automerge": true }
   ]
 }
