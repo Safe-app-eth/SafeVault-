@@ -1,9 +1,12 @@
-/** @type {import('next').NextConfig} */
-const nextConfig = {
-  reactStrictMode: true,
-  compiler: {
-    styledComponents: true
+const securityHeaders = [
+  {
+    key: 'Content-Security-Policy',
+    value: "frame-ancestors https://safe.global https://*.safe.global;"
+  },
+  { key: 'X-Frame-Options', value: 'ALLOWALL' }
+];
+module.exports = {
+  async headers() {
+    return [{ source: '/:path*', headers: securityHeaders }];
   }
-}
-
-module.exports = nextConfig;
+};
