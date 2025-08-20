@@ -1,0 +1,23 @@
+name: Reusable CodeQL
+
+on:
+  workflow_call:
+    inputs:
+      languages:
+        description: "Comma-separated list e.g., javascript,python"
+        type: string
+        default: "javascript,python"
+
+jobs:
+  analyze:
+    runs-on: ubuntu-latest
+    permissions:
+      security-events: write
+      actions: read
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: github/codeql-action/init@v3
+        with:
+          languages: ${{ inputs.languages }}
+      - uses: github/codeql-action/analyze@v3
