@@ -1,0 +1,10 @@
+# .github/workflows/branch-protection.yml
+name: Branch protection
+on:
+  push:
+    branches: [ main ]
+jobs:
+  protect:
+    uses: your-org/.github/.github/workflows/reusable-branch-protection.yml@main
+    with:
+      branch: "main"
