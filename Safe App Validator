@@ -1,0 +1,17 @@
+name: Safe App Validator
+
+on:
+  pull_request:
+    paths:
+      - 'public/.well-known/safe-app.json'
+      - 'next.config.js'
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate manifest
+        run: |
+          test -f public/.well-known/safe-app.json || exit 1
+          grep -q 'frame-ancestors' next.config.js || exit 1
