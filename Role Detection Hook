@@ -1,0 +1,13 @@
+export const useSafeRole = (safeAddress: string, signer: string) => {
+  const [role, setRole] = useState<'owner' | 'viewer' | 'unknown'>('unknown');
+  useEffect(() => {
+    // Fetch Safe owners from Safe API
+    fetch(`https://safe-transaction-mainnet.safe.global/api/v1/safes/${safeAddress}/`)
+      .then(res => res.json())
+      .then(data => {
+        if (data.owners.includes(signer)) setRole('owner');
+        else setRole('viewer');
+      });
+  }, [safeAddress, signer]);
+  return role;
+};
