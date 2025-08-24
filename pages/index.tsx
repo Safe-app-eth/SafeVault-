@@ -1,19 +1,17 @@
-import SafeAppsSDK from '@safe-global/safe-apps-sdk';
-import { useEffect } from 'react';
-
-const sdk = new SafeAppsSDK();
+import VaultCard from '../components/VaultCard';
+import { DASHBOARD_CONFIG } from '../config/dashboard.config';
 
 export default function Home() {
-  useEffect(() => {
-    sdk.safe.getInfo().then((safeInfo) => {
-      console.log('Connected Safe:', safeInfo.safeAddress);
-    });
-  }, []);
+  const vaults = DASHBOARD_CONFIG.vaults;
 
   return (
-    <div>
-      <h1>SafeVault Dashboard</h1>
-      <p>Loading Safe context...</p>
-    </div>
+    <main className="bg-black min-h-screen text-white p-6">
+      <h1 className="text-2xl font-bold mb-4">SafeVault Dashboard</h1>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {vaults.map((vault, index) => (
+          <VaultCard key={index} {...vault} />
+        ))}
+      </div>
+    </main>
   );
 }

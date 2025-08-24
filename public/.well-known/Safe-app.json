@@ -1,0 +1,6 @@
+{
+  "name": "SafeVault",
+  "description": "Governance & automation dashboard for Safe",
+  "iconPath": "/icon.png",
+  "allowedDomains": ["https://safe-vault-f44t.vercel.app"]
+}

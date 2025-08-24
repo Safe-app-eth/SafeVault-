@@ -1,0 +1,31 @@
+name: 🏷️ Auto-label issues by keywords
+
+on:
+  issues:
+    types: [opened, edited]
+
+jobs:
+  label:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const issue = context.payload.issue
+            const body = issue.body.toLowerCase()
+
+            const labels = []
+            if (body.includes("arbitrum")) labels.push("arbitrum")
+            if (body.includes("polygon")) labels.push("polygon")
+            if (body.includes("ethereum")) labels.push("ethereum")
+            if (body.includes("transaction")) labels.push("transactions")
+
+            if (labels.length > 0) {
+              github.rest.issues.addLabels({
+                issue_number: issue.number,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                labels
+              })
+            }

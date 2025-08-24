@@ -1,0 +1,14 @@
+"area/frontend":
+  - "frontend/**"
+  - "**/*.{js,ts,jsx,tsx}"
+"area/backend":
+  - "backend/**"
+  - "**/*.{py,rb,go,java,kt}"
+"dependencies":
+  - "**/package.json"
+  - "**/requirements.txt"
+  - "**/poetry.lock"
+  - "**/go.mod"
+  - ".github/workflows/**"
+"docs":
+  - "docs/**"

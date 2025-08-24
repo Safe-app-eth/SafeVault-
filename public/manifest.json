@@ -1,20 +1,7 @@
-
+{
   "name": "SafeVault",
-  "description": "A powerful Safe App for managing Safe wallets, proposals, and contract automation.",
-  "iconPath": "favicon.ico",
-  "version": "1.0.0",
-  "appUrl": "https://safe-vault-f44t.vercel.app/",
-  "provider": {
-    "name": "SafeVault Team",
-    "url": "https://github.com/Safe-app-eth/SafeVault"
-  },
-  "accessControl": {
-    "type": "READ_WRITE"
-  }
-=======
-  "name": "SafeVault Multisig Dashboard",
-  "description": "View and manage Safe proposals, signatures, and statuses in real time.",
-  "iconPath": "/logo.svg",
-  "chainIds": [1, 42161, 137],  // Ethereum, Arbitrum, Polygon
-  "url": "https://safe-vault-f44t.vercel.app"
+  "description": "Multi-chain vault manager for Safe{Wallet}",
+  "iconPath": "logo.svg",
+  "safeAppsSdkVersion": "7.11.0",
+  "allowedDomains": ["https://safevault.yourdomain.com"]
 }

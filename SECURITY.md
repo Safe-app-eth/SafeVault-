@@ -61,3 +61,6 @@ Tm3H2qfvP6qqIvOs/hBPV9TsVFzL3G0Z4EwqmuRF7ud/LXIsRk15XE+tpRfp
 9hoGjbVf8zHBMrEvY/hvZyPMnqaK
 =+c9C
 -----END PGP PUBLIC KEY BLOCK-----
+
+If you discover a security issue, please responsibly disclose via security@SafeVault-.com.
+We aim to respond within 48 hours. Do not open public issues for vulnerabilities.

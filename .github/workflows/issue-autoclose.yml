@@ -1,0 +1,34 @@
+name: 🚫 Auto-close invalid issues
+
+on:
+  issues:
+    types: [opened, edited]
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const issue = context.payload.issue
+            const body = issue.body ? issue.body.trim() : ""
+
+            if (body.length < 30) {
+              github.rest.issues.createComment({
+                issue_number: issue.number,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                body: "⚠️ Hi @" + issue.user.login + 
+                      ", thanks for your issue. It looks like your report is missing details. " +
+                      "Please fill out the template properly. Closing this issue for now."
+              })
+
+              github.rest.issues.update({
+                issue_number: issue.number,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                state: "closed"
+              })
+            }

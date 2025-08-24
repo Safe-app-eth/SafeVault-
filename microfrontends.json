@@ -1,0 +1,31 @@
+{
+  "$schema": "https://openapi.vercel.sh/microfrontends.json",
+  "applications": {
+    "reown-appkit": {
+      "development": {
+        "fallback": "reown-appkit-delta.vercel.app"
+      }
+    },
+    "automatisch-appkit": {
+      "routing": [
+        {
+          "paths": [/* add paths here */]
+        }
+      ]
+    },
+    "safe-vault-dbz7": {
+      "routing": [
+        {
+          "paths": [/* add paths here */]
+        }
+      ]
+    },
+    "safe-wallet-gnosis-vault": {
+      "routing": [
+        {
+          "paths": [/* add paths here */]
+        }
+      ]
+    }
+  }
+}

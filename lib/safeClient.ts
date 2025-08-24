@@ -1,21 +1,11 @@
-import Safe, { EthersAdapter } from '@safe-global/protocol-kit'
-import { ethers } from 'ethers'
+import { ethers } from "ethers";
+import Safe, { EthersAdapter } from "@safe-global/protocol-kit";
+import { NETWORKS } from "./networks";
 
-export async function getSafeClient(provider: ethers.providers.Web3Provider) {
-  const signer = provider.getSigner()
-  const ethAdapter = new EthersAdapter({
-    ethers,
-    signerOrProvider: signer,
-  })
+export async function initSafe(safeAddress: string, chain: keyof typeof NETWORKS) {
+  const provider = new ethers.JsonRpcProvider(NETWORKS[chain].rpcUrl);
+  const signer = provider.getSigner(process.env.SAFE_SIGNER); // read-only verified signer
+  const ethAdapter = new EthersAdapter({ ethers, signerOrProvider: signer });
 
-  const safeAddress = process.env.NEXT_PUBLIC_SAFE_ADDRESS || '' // from Vercel env
-
-  const safeSdk = await Safe.create({ ethAdapter, safeAddress })
-
-  return {
-    safeSdk,
-    safeAddress,
-    signer,
-    provider,
-  }
+  return await Safe.create({ ethAdapter, safeAddress });
 }

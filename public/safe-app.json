@@ -1,4 +1,11 @@
 {
+  "name": "SafeVault",
+  "description": "Multi-chain Safe dashboard with verified signer monitoring.",
+  "iconPath": "icon.png",
+  "url": "http://127.0.0.1:3000/#",
+  "safeAddress": "0xFDf84a0e7D07bC56f7De56696fc409704cC83a24"
+{
+{
   "addressBook": {
     "1": {
       "0xA9D1e08C7793af67e9d92fe308d5697FB81d3E43": "Wallet 1",
