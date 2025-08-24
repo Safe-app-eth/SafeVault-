@@ -1,14 +1,14 @@
-// pages/_app.tsx
-import "../styles/globals.css";
-import Layout from "../components/Layout";
-import { WalletProvider } from "../components/WalletStatus";
+import { ChakraProvider } from '@chakra-ui/react';
+import { WagmiConfig } from 'wagmi';
+import { wagmiClient } from '../lib/wallet';
+import '../styles/globals.css';
 
-export default function App({ Component, pageProps }) {
+export default function MyApp({ Component, pageProps }) {
   return (
-    <WalletProvider>
-      <Layout>
+    <ChakraProvider>
+      <WagmiConfig client={wagmiClient}>
         <Component {...pageProps} />
-      </Layout>
-    </WalletProvider>
+      </WagmiConfig>
+    </ChakraProvider>
   );
 }
