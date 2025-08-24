@@ -1,0 +1,35 @@
+name: Safe App Validator
+
+on:
+  pull_request:
+    paths:
+      - 'public/.well-known/safe-app.json'
+      - 'next.config.js'
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Validate Safe App manifest
+        run: |
+          if [ ! -f public/.well-known/safe-app.json ]; then
+            echo "❌ Manifest missing at .well-known/safe-app.json"
+            exit 1
+          fi
+          node -e "
+            const fs = require('fs');
+            const manifest = JSON.parse(fs.readFileSync('public/.well-known/safe-app.json'));
+            if (!manifest.name || !manifest.iconPath || !Array.isArray(manifest.allowedDomains)) {
+              throw new Error('❌ Invalid Safe App manifest schema');
+            }
+          "
+
+      - name: Check CSP headers
+        run: |
+          grep -q 'frame-ancestors' next.config.js || {
+            echo '❌ Missing frame-ancestors CSP in next.config.js';
+            exit 1;
+          }
