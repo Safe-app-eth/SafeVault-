@@ -1,0 +1,18 @@
+import ProposalCard from './ProposalCard'
+import { VStack } from '@chakra-ui/react'
+
+const proposals = [
+  { id: '1', title: 'Rebalance Treasury', status: 'pending', createdAt: '2025-08-24' },
+  { id: '2', title: 'Add New Signer', status: 'executed', createdAt: '2025-08-20' },
+  { id: '3', title: 'Upgrade Vault Logic', status: 'failed', createdAt: '2025-08-18' }
+]
+
+export default function ProposalTracker() {
+  return (
+    <VStack spacing={4} align="stretch">
+      {proposals.map(p => (
+        <ProposalCard key={p.id} proposal={p} />
+      ))}
+    </VStack>
+  )
+}
