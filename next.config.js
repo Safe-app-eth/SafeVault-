@@ -5,6 +5,7 @@ const securityHeaders = [
   },
   { key: 'X-Frame-Options', value: 'ALLOWALL' }
 ];
+
 module.exports = {
   async headers() {
     return [{ source: '/:path*', headers: securityHeaders }];
