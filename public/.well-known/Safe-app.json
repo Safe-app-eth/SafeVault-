@@ -1,6 +1,7 @@
 {
   "name": "SafeVault",
-  "description": "Governance & automation dashboard for Safe",
-  "iconPath": "/icon.png",
-  "allowedDomains": ["https://safe-vault-f44t.vercel.app"]
+  "description": "Multichain vault manager for Safe{Wallet}",
+  "iconPath": "/logo.svg",
+  "safeAppsSdkVersion": "7.11.0",
+  "allowedDomains": ["https://safevault.vercel.app"]
 }
